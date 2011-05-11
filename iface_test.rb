@@ -19,8 +19,7 @@ packets = (1..opts[:count]).map do
 end
 
 puts "starting capture on #{opts[:d_iface]}"
-capture = PacketFu::Capture.new :iface => opts[:d_iface]
-capture.start
+capture = PacketFu::Capture.new :iface => opts[:d_iface], :start => true
 
 puts "injecting packets into #{opts[:s_iface]}"
 inject = PacketFu::Inject.new :iface => opts[:s_iface]
