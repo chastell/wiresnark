@@ -14,6 +14,9 @@ opts = Trollop.options do
   opt :type,     'packet type',           :default => 'TCP'
 end
 
+types = ['ARP', 'Eth', 'ICMP', 'IP', 'IPv6', 'TCP', 'UDP']
+Trollop.die :type, "must be one of #{types.join ', '}" unless types.include? opts[:type]
+
 opts[:eth_dst]  = Array.new(6) { rand(256).to_s(16).rjust(2, '0') }.join(':') if opts[:eth_dst]  == 'random'
 opts[:eth_src]  = Array.new(6) { rand(256).to_s(16).rjust(2, '0') }.join(':') if opts[:eth_src]  == 'random'
 opts[:ip_daddr] = Array.new(4) { rand(256) }.join('.')                        if opts[:ip_daddr] == 'random'
@@ -22,12 +25,15 @@ opts[:payload]  = rand.to_s                                                   if
 
 puts "generating #{opts[:count]} #{opts[:type]} packets"
 packets = Array.new opts[:count] do
-  packet = PacketFu::TCPPacket.new
-  packet.eth_dst  = opts[:eth_dst]
-  packet.eth_src  = opts[:eth_src]
-  packet.ip_daddr = opts[:ip_daddr]
-  packet.ip_saddr = opts[:ip_saddr]
-  packet.payload  = opts[:payload]
+  packet = eval "PacketFu::#{opts[:type]}Packet.new"
+  begin
+    packet.eth_dst  = opts[:eth_dst]
+    packet.eth_src  = opts[:eth_src]
+    packet.ip_daddr = opts[:ip_daddr]
+    packet.ip_saddr = opts[:ip_saddr]
+    packet.payload  = opts[:payload]
+  rescue NoMethodError
+  end
   packet
 end
 
