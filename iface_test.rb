@@ -11,6 +11,7 @@ opts = Trollop.options do
   opt :ip_daddr, 'destination IP',        :default => 'random'
   opt :ip_saddr, 'source IP',             :default => 'random'
   opt :payload,  'payload',               :default => 'random'
+  opt :sleep,    'seconds to sleep',      :default => 0
   opt :type,     'packet type',           :default => 'TCP'
 end
 
@@ -43,6 +44,8 @@ capture = PacketFu::Capture.new :iface => opts[:diface], :start => true
 puts "injecting packets into #{opts[:siface]}"
 packets.each { |p| p.to_w opts[:siface] }
 
+puts "sleeping #{opts[:sleep]} seconds before ending capture"
+sleep opts[:sleep]
 capture.save
 
 puts 'GENERATED:'
