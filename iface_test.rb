@@ -15,18 +15,17 @@ packets = (1..opts[:count]).map do
   packet.ip_saddr = [rand(256), rand(256), rand(256), rand(256)].join '.'
   packet.ip_daddr = [rand(256), rand(256), rand(256), rand(256)].join '.'
   packet.payload  = rand.to_s
-  packet.to_s
+  packet
 end
 
 puts "starting capture on #{opts[:d_iface]}"
 capture = PacketFu::Capture.new :iface => opts[:d_iface], :start => true
 
 puts "injecting packets into #{opts[:s_iface]}"
-inject = PacketFu::Inject.new :iface => opts[:s_iface]
-inject.array_to_wire :array => packets
+packets.each { |p| p.to_w opts[:s_iface] }
 
 capture.save
 
 print "captured #{capture.array.size} packets - "
-print '*NOT* ' unless (packets - capture.array).empty?
+print '*NOT* ' unless (packets.map(&:to_s) - capture.array).empty?
 puts 'all generated captured!'
