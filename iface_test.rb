@@ -28,11 +28,11 @@ puts "generating #{opts[:count]} #{opts[:type]} packets"
 packets = Array.new opts[:count] do
   packet = eval "PacketFu::#{opts[:type]}Packet.new"
   begin
+    packet.payload   = opts[:payload]
     packet.eth_daddr = opts[:eth_daddr]
     packet.eth_saddr = opts[:eth_saddr]
     packet.ip_daddr  = opts[:ip_daddr]
     packet.ip_saddr  = opts[:ip_saddr]
-    packet.payload   = opts[:payload]
   rescue NoMethodError
   end
   packet
