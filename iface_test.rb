@@ -45,6 +45,14 @@ packets.each { |p| p.to_w opts[:siface] }
 
 capture.save
 
-print "captured #{capture.array.size} packets - "
-print '*NOT* ' unless (packets.map(&:to_s) - capture.array).empty?
-puts 'all generated captured!'
+puts 'GENERATED:'
+packets.each { |packet| puts "\t" + packet.peek }
+
+puts 'CAPTURED:'
+capture.array.each { |str| puts "\t" + PacketFu::Packet.parse(str).peek }
+
+missing = packets.map(&:to_s) - capture.array
+unless missing.empty?
+  puts 'MISSING:'
+  missing.each { |str| puts "\t" + PacketFu::Packet.parse(str).peek }
+end
