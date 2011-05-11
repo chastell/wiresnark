@@ -4,8 +4,8 @@ require 'trollop'
 
 opts = Trollop.options do
   opt :count,    'packet count',          :default => 10
-  opt :d_iface,  'destination interface', :default => 'lo'
-  opt :s_iface,  'source interface',      :default => 'lo'
+  opt :diface,   'destination interface', :default => 'lo'
+  opt :siface,   'source interface',      :default => 'lo'
   opt :ip_daddr, 'destination IP',        :default => 'random'
   opt :ip_saddr, 'source IP',             :default => 'random'
   opt :type,     'packet type',           :default => 'TCP'
@@ -23,11 +23,11 @@ packets = Array.new opts[:count] do
   packet
 end
 
-puts "starting capture on #{opts[:d_iface]}"
-capture = PacketFu::Capture.new :iface => opts[:d_iface], :start => true
+puts "starting capture on #{opts[:diface]}"
+capture = PacketFu::Capture.new :iface => opts[:diface], :start => true
 
-puts "injecting packets into #{opts[:s_iface]}"
-packets.each { |p| p.to_w opts[:s_iface] }
+puts "injecting packets into #{opts[:siface]}"
+packets.each { |p| p.to_w opts[:siface] }
 
 capture.save
 
