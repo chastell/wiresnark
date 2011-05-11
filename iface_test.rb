@@ -9,7 +9,7 @@ opts = Trollop.options do
   opt :type,    'packet type',           :default => 'TCP'
 end
 
-puts "generating #{opts[:count]} #{opts[:type]} packets…"
+puts "generating #{opts[:count]} #{opts[:type]} packets"
 packets = (1..opts[:count]).map do
   packet = PacketFu::TCPPacket.new
   packet.ip_saddr = [rand(256), rand(256), rand(256), rand(256)].join '.'
@@ -18,16 +18,16 @@ packets = (1..opts[:count]).map do
   packet.to_s
 end
 
-puts "starting capture on #{opts[:d_iface]}…"
+puts "starting capture on #{opts[:d_iface]}"
 capture = PacketFu::Capture.new :iface => opts[:d_iface]
 capture.start
 
-puts "injecting packets into #{opts[:s_iface]}…"
+puts "injecting packets into #{opts[:s_iface]}"
 inject = PacketFu::Inject.new :iface => opts[:s_iface]
 inject.array_to_wire :array => packets
 
 capture.save
 
-puts "captured #{capture.array.size} packets…"
+print "captured #{capture.array.size} packets - "
 print '*NOT* ' unless (packets - capture.array).empty?
 puts 'all generated captured!'
