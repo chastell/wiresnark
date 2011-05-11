@@ -10,7 +10,7 @@ opts = Trollop.options do
 end
 
 puts "generating #{opts[:count]} #{opts[:type]} packets"
-packets = (1..opts[:count]).map do
+packets = Array.new opts[:count] do
   packet = PacketFu::TCPPacket.new
   packet.ip_saddr = [rand(256), rand(256), rand(256), rand(256)].join '.'
   packet.ip_daddr = [rand(256), rand(256), rand(256), rand(256)].join '.'
