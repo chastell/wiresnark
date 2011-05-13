@@ -15,6 +15,13 @@ opts = Trollop.options do
   opt :payload,    'payload',               :default => 'random'
   opt :sleep,      'seconds to sleep',      :default => 0
   opt :type,       'packet type',           :default => 'TCP'
+
+  nf_defaults = ['eth1', 'eth2', 'nf2c2', 'nf2c3']
+  (0..3).each do |x|
+    ['mine', 'other'].each do |mac|
+      opt :"nf2c#{x}_#{mac}", "'#{mac}' MAC for nf2c#{x}", :default => mac == 'mine' ? "nf2c#{x}" : nf_defaults[x]
+    end
+  end
 end
 
 types = ['ARP', 'Eth', 'ICMP', 'IP', 'IPv6', 'TCP', 'UDP']
