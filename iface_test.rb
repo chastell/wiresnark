@@ -37,6 +37,17 @@ opts[:ipv6_daddr] = Array.new(8) { rand(65536).to_s(16).rjust(4, '0') }.join(':'
 opts[:ipv6_saddr] = Array.new(8) { rand(65536).to_s(16).rjust(4, '0') }.join(':') if opts[:ipv6_saddr] == 'random'
 opts[:payload]    = rand.to_s                                                     if opts[:payload]    == 'random'
 
+mac_addr = /([\da-f]{2}:){5}[\da-f]{2}/
+
+(0..3).each do |x|
+  ['local', 'other'].each do |mac|
+    option = :"nf2c#{x}_#{mac}"
+    unless opts[option] =~ mac_addr
+      opts[option] = `ifconfig #{opts[option]}`.match(mac_addr).to_s
+    end
+  end
+end
+
 puts "generating #{opts[:count]} #{opts[:type]} packets"
 packets = Array.new opts[:count] do
   packet = eval "PacketFu::#{opts[:type]}Packet.new"
