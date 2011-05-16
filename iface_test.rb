@@ -21,7 +21,7 @@ opts = Trollop.options do
   nf_defaults = ['eth1', 'eth2', 'nf2c3', 'nf2c2']
   (0..3).each do |x|
     ['local', 'other'].each do |mac|
-      opt :"nf2c#{x}_#{mac}", "'#{mac}' MAC for nf2c#{x}", :default => mac == 'local' ? "nf2c#{x}" : nf_defaults[x]
+      opt :"nf2c#{x}_#{mac}", "#{mac} nf2c#{x} MAC or iface to copy from", :default => mac == 'local' ? "nf2c#{x}" : nf_defaults[x]
     end
   end
 end
