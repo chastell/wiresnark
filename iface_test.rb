@@ -43,7 +43,11 @@ mac_addr = /([\da-f]{2}:){5}[\da-f]{2}/
   ['local', 'other'].each do |mac|
     option = :"nf2c#{x}_#{mac}"
     unless opts[option] =~ mac_addr
-      opts[option] = `ifconfig #{opts[option]}`.match(mac_addr).to_s
+      begin
+        opts[option] = File.read("/sys/class/net/#{opts[option]}/address").chomp
+      rescue Errno::ENOENT
+        Trollop.die option, "no such device: #{opts[option]}"
+      end
     end
   end
 end
