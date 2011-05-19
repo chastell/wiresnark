@@ -37,17 +37,13 @@ opts[:ipv6_daddr] = Array.new(8) { rand(65536).to_s(16).rjust(4, '0') }.join(':'
 opts[:ipv6_saddr] = Array.new(8) { rand(65536).to_s(16).rjust(4, '0') }.join(':') if opts[:ipv6_saddr] == 'random'
 opts[:payload]    = rand.to_s                                                     if opts[:payload]    == 'random'
 
-mac_addr = /([\da-f]{2}:){5}[\da-f]{2}/
 
-(0..3).each do |x|
-  ['local', 'other'].each do |mac|
-    option = :"nf2c#{x}_#{mac}"
-    unless opts[option] =~ mac_addr
-      begin
-        opts[option] = File.read("/sys/class/net/#{opts[option]}/address").chomp
-      rescue Errno::ENOENT
-        Trollop.die option, "no such device: #{opts[option]}"
-      end
+((0..3).map { |x| ['local', 'other'].map { |loc| :"nf2c#{x}_#{loc}" }}.flatten + [:eth_daddr, :eth_saddr]).each do |option|
+  unless opts[option] =~ /^([\da-f]{2}:){5}[\da-f]{2}$/
+    begin
+      opts[option] = File.read("/sys/class/net/#{opts[option]}/address").chomp
+    rescue Errno::ENOENT
+      Trollop.die option, "no such device: #{opts[option]}"
     end
   end
 end
