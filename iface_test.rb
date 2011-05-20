@@ -48,6 +48,12 @@ opts[:payload]    = rand.to_s                                                   
   end
 end
 
+[:ip_daddr, :ip_saddr].each do |option|
+  unless opts[option] =~ /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/
+    opts[option] = `ifconfig #{opts[option]}`.match(/inet addr:(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/)[1].to_s
+  end
+end
+
 puts "generating #{opts[:count]} #{opts[:type]} packets"
 packets = Array.new opts[:count] do
   packet = eval "PacketFu::#{opts[:type]}Packet.new"
