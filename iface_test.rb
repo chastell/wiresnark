@@ -83,7 +83,7 @@ packets.each { |packet| puts "\t" + packet.peek }
 puts 'CAPTURED:'
 capture.array.each { |str| puts "\t" + PacketFu::Packet.parse(str).peek }
 
-missing = packets.map(&:to_s) - capture.array
+missing = packets.map { |p| p.to_s } - capture.array
 unless missing.empty?
   puts 'MISSING:'
   missing.each { |str| puts "\t" + PacketFu::Packet.parse(str).peek }
