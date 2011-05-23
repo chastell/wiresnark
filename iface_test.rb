@@ -58,6 +58,16 @@ end
   end
 end
 
+[:ipv6_daddr, :ipv6_saddr].each do |option|
+  unless opts[option] =~ /^([\da-f]{4}:){7}[\da-f]{4}$/
+    begin
+      opts[option] = `ifconfig #{opts[option]}`.match(/inet6 addr: ([^ ].*) /)[1].to_s
+    rescue NoMethodError
+      Trollop.die option, "no such device or device not configured: #{opts[option]}"
+    end
+  end
+end
+
 puts "generating #{opts[:count]} #{opts[:type]} packets"
 packets = Array.new opts[:count] do
   packet = eval "PacketFu::#{opts[:type]}Packet.new"
