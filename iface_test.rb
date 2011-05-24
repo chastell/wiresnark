@@ -37,7 +37,6 @@ opts[:ipv6_daddr] = Array.new(8) { rand(65536).to_s(16).rjust(4, '0') }.join(':'
 opts[:ipv6_saddr] = Array.new(8) { rand(65536).to_s(16).rjust(4, '0') }.join(':') if opts[:ipv6_saddr] == 'random'
 opts[:payload]    = rand.to_s                                                     if opts[:payload]    == 'random'
 
-
 ((0..3).map { |x| ['local', 'other'].map { |loc| :"nf2c#{x}_#{loc}" }}.flatten + [:eth_daddr, :eth_saddr]).each do |option|
   unless opts[option] =~ /^([\da-f]{2}:){5}[\da-f]{2}$/
     begin
@@ -91,13 +90,14 @@ puts "sleeping #{opts[:sleep]} seconds before ending capture"
 sleep opts[:sleep]
 capture.save
 
+missing = packets.map { |p| p.to_s } - capture.array
+
 puts 'GENERATED:'
 packets.each { |packet| puts "\t" + packet.peek }
 
-puts 'CAPTURED:'
+puts "CAPTURED #{'(all generated were captured)' if missing.empty?}:"
 capture.array.each { |str| puts "\t" + PacketFu::Packet.parse(str).peek }
 
-missing = packets.map { |p| p.to_s } - capture.array
 unless missing.empty?
   puts 'MISSING:'
   missing.each { |str| puts "\t" + PacketFu::Packet.parse(str).peek }
