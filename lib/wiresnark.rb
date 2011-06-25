@@ -1,9 +1,9 @@
 module Wiresnark
 
-  extend self
+  autoload :DSL, 'wiresnark/dsl'
 
-  def run &block
-    instance_eval &block
+  def self.run &block
+    DSL.instance_eval &block
   end
 
 end
