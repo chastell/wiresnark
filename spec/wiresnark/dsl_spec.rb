@@ -8,8 +8,7 @@ module Wiresnark describe DSL do
       iface_name  = 'DSL.send_packets_to spec interface'
 
       Generator.should_receive(:generate).with(&packet_spec).and_return packets = mock
-      Interfaces.should_receive(:[]).with(iface_name).and_return iface = mock
-      iface.should_receive(:inject).with packets
+      Interfaces[iface_name].should_receive(:inject).with packets
 
       DSL.send_packets_to iface_name, &packet_spec
     end
