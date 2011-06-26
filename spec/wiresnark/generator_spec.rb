@@ -7,6 +7,11 @@ module Wiresnark module Generator
       Generator.generate {}.should == [packet]
     end
 
+    it 'makes it possible to set the count in the passed block' do
+      Packet.should_receive(:new).exactly(3).times.and_return p1 = mock, p2 = mock, p3 = mock
+      Generator.generate { count 3 }.should == [p1, p2, p3]
+    end
+
   end
 
 end end
