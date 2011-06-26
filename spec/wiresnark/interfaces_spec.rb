@@ -3,11 +3,13 @@ module Wiresnark module Interfaces
   describe '.[]' do
 
     it 'returns the requested Interface (creating it only if necessary)' do
-      Interface.should_receive(:new).with('lo').and_return lo = mock
-      Interfaces['lo'].should == lo
+      iface_name = 'Interfaces.[] spec interface'
+
+      Interface.should_receive(:new).with(iface_name).and_return iface = mock
+      Interfaces[iface_name].should == iface
 
       Interface.should_not_receive :new
-      Interfaces['lo'].should == lo
+      Interfaces[iface_name].should == iface
     end
 
   end
