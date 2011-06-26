@@ -12,6 +12,13 @@ module Wiresnark module Generator
       Generator.generate { count 3 }.should == [p1, p2, p3]
     end
 
+    it 'resets the count on every generation' do
+      Packet.should_receive(:new).twice
+      Generator.generate { count 2 }
+      Packet.should_receive(:new).once
+      Generator.generate {}
+    end
+
   end
 
 end end

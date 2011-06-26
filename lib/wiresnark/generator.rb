@@ -3,8 +3,9 @@ module Wiresnark module Generator
   extend self
 
   def generate &packet_spec
-    instance_eval &packet_spec
-    Array.new(count) { Packet.new(type: 'Eth') }
+    gen = Object.new.extend self
+    gen.instance_eval &packet_spec
+    Array.new(gen.count) { Packet.new(type: 'Eth') }
   end
 
   def count count = nil
