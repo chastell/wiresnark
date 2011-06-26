@@ -2,15 +2,14 @@ module Wiresnark describe DSL do
 
   describe '.send_packets_to' do
 
-    # FIXME: unmock the below once implemented
     it 'sends the desired packets to the given interface' do
-      packet_spec = -> {}
-      iface_name  = 'DSL.send_packets_to spec interface'
+      iface_name = 'DSL.send_packets_to spec interface'
+      Interfaces[iface_name].should_receive(:inject).with([Packet.new(type: 'TCP'), Packet.new(type: 'TCP')])
 
-      Generator.should_receive(:generate).with(&packet_spec).and_return packets = mock
-      Interfaces[iface_name].should_receive(:inject).with packets
-
-      DSL.send_packets_to iface_name, &packet_spec
+      DSL.send_packets_to iface_name do
+        count 2
+        type 'TCP'
+      end
     end
 
   end
