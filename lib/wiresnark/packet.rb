@@ -10,4 +10,10 @@ module Wiresnark class Packet
     type == other.type
   end
 
+  alias eql? ==
+
+  def hash
+    @type.hash
+  end
+
 end end

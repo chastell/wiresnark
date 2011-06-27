@@ -9,4 +9,21 @@ module Wiresnark describe Packet do
 
   end
 
+  describe '#eql?' do
+
+    it 'matches #== for equality' do
+      Packet.new(type: 'Eth').should     be_eql Packet.new(type: 'Eth')
+      Packet.new(type: 'Eth').should_not be_eql Packet.new(type: 'TCP')
+    end
+
+  end
+
+  describe '#hash' do
+
+    it 'returns the same hash for eql? Packets' do
+      Packet.new(type: 'Eth').hash.should == Packet.new(type: 'Eth').hash
+    end
+
+  end
+
 end end
