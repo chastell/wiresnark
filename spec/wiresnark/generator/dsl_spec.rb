@@ -14,6 +14,16 @@ module Wiresnark describe Generator::DSL do
 
   end
 
+  describe '#payload' do
+
+    it 'allows setting and reading payload, defaulting to nil' do
+      @env.payload.should be_nil
+      @env.payload 'LOAD "*",8,1'
+      @env.payload.should == 'LOAD "*",8,1'
+    end
+
+  end
+
   describe '#type' do
 
     it 'allows setting and reading type, defaulting to Eth' do
