@@ -10,6 +10,7 @@ opts = Trollop.options do
   opt :siface,     'source interface',      :default => 'lo'
   opt :eth_daddr,  'destination MAC',       :default => 'random'
   opt :eth_saddr,  'source MAC',            :default => 'random'
+  opt :iip_byte,   'IIP byte',              :default => 1
   opt :ip_daddr,   'destination IP',        :default => 'random'
   opt :ip_saddr,   'source IP',             :default => 'random'
   opt :ipv6_daddr, 'destination IPv6',      :default => 'random'
@@ -26,7 +27,7 @@ opts = Trollop.options do
   end
 end
 
-types = ['ARP', 'Eth', 'ICMP', 'IP', 'IPv6', 'TCP', 'UDP']
+types = ['ARP', 'Eth', 'ICMP', 'IIP', 'IP', 'IPv6', 'TCP', 'UDP']
 Trollop.die :type, "must be one of #{types.join ', '}" unless types.include? opts[:type]
 
 opts[:eth_daddr]  = Array.new(6) { rand(256).to_s(16).rjust(2, '0') }.join(':')   if opts[:eth_daddr]  == 'random'
@@ -69,8 +70,10 @@ end
 
 puts "generating #{opts[:count]} #{opts[:type]} packets"
 packets = Array.new opts[:count] do
-  packet = eval "PacketFu::#{opts[:type]}Packet.new"
-  packet.payload    = opts[:payload]
+  type    = opts[:type] == 'IIP' ? 'Eth'                                : opts[:type]
+  payload = opts[:type] == 'IIP' ? opts[:iip_byte].chr + opts[:payload] : opts[:payload]
+  packet = eval "PacketFu::#{type}Packet.new"
+  packet.payload    = payload
   packet.eth_daddr  = opts[:eth_daddr]
   packet.eth_saddr  = opts[:eth_saddr]
   packet.ip_daddr   = opts[:ip_daddr]   if packet.is_ip?
