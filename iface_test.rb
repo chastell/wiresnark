@@ -14,7 +14,7 @@ opts = Trollop.options do
   opt :ip_saddr,   'source IP',             :default => 'random'
   opt :ipv6_daddr, 'destination IPv6',      :default => 'random'
   opt :ipv6_saddr, 'source IPv6',           :default => 'random'
-  opt :payload,    'payload',               :default => 'random'
+  opt :payload,    'payload',               :default => ''
   opt :sleep,      'seconds to sleep',      :default => 0
   opt :type,       'packet type',           :default => 'TCP'
 
