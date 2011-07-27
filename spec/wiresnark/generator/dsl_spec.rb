@@ -14,6 +14,16 @@ module Wiresnark describe Generator::DSL do
 
   end
 
+  describe '#destination_ip' do
+
+    it 'allows setting and reading destination IP address, defaulting to 0.0.0.0' do
+      @env.destination_ip.should == '0.0.0.0'
+      @env.destination_ip '1.2.3.4'
+      @env.destination_ip.should == '1.2.3.4'
+    end
+
+  end
+
   describe '#destination_mac' do
 
     it 'allows setting and reading destination MAC address, defaulting to 00:00:00:00:00' do
@@ -30,6 +40,16 @@ module Wiresnark describe Generator::DSL do
       @env.payload.should == ''
       @env.payload 'LOAD "*",8,1'
       @env.payload.should == 'LOAD "*",8,1'
+    end
+
+  end
+
+  describe '#source_ip' do
+
+    it 'allows setting and reading source IP address, defaulting to 0.0.0.0' do
+      @env.source_ip.should == '0.0.0.0'
+      @env.source_ip '1.2.3.4'
+      @env.source_ip.should == '1.2.3.4'
     end
 
   end
