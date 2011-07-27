@@ -19,6 +19,7 @@ module Wiresnark module Generator::DSL
   dsl_attr :destination_ip,   '0.0.0.0'
   dsl_attr :destination_ipv6, '0000:0000:0000:0000:0000:0000:0000:0000'
   dsl_attr :destination_mac,  '00:00:00:00:00:00'
+  dsl_attr :iip_byte,         1
   dsl_attr :payload,          ''
   dsl_attr :source_ip,        '0.0.0.0'
   dsl_attr :source_ipv6,      '0000:0000:0000:0000:0000:0000:0000:0000'

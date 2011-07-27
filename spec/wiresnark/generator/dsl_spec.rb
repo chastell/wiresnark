@@ -44,6 +44,16 @@ module Wiresnark describe Generator::DSL do
 
   end
 
+  describe '#iip_byte' do
+
+    it 'allows setting and reading IIP byte, defaulting to 1' do
+      @env.iip_byte.should == 1
+      @env.iip_byte 2
+      @env.iip_byte.should == 2
+    end
+
+  end
+
   describe '#payload' do
 
     it 'allows setting and reading payload, defaulting to empty' do
