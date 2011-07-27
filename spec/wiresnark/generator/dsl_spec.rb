@@ -14,12 +14,32 @@ module Wiresnark describe Generator::DSL do
 
   end
 
+  describe '#destination_mac' do
+
+    it 'allows setting and reading destination MAC address, defaulting to 00:00:00:00:00' do
+      @env.destination_mac.should == '00:00:00:00:00:00'
+      @env.destination_mac '11:22:33:44:55:66'
+      @env.destination_mac.should == '11:22:33:44:55:66'
+    end
+
+  end
+
   describe '#payload' do
 
     it 'allows setting and reading payload, defaulting to nil' do
       @env.payload.should be_nil
       @env.payload 'LOAD "*",8,1'
       @env.payload.should == 'LOAD "*",8,1'
+    end
+
+  end
+
+  describe '#source_mac' do
+
+    it 'allows setting and reading source MAC address, defaulting to 00:00:00:00:00' do
+      @env.source_mac.should == '00:00:00:00:00:00'
+      @env.source_mac '11:22:33:44:55:66'
+      @env.source_mac.should == '11:22:33:44:55:66'
     end
 
   end
