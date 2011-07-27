@@ -24,6 +24,16 @@ module Wiresnark describe Generator::DSL do
 
   end
 
+  describe '#destination_ipv6' do
+
+    it 'allows setting and reading destination IPv6 address, defaulting to 0000:0000:0000:0000:0000:0000:0000:0000' do
+      @env.destination_ipv6.should == '0000:0000:0000:0000:0000:0000:0000:0000'
+      @env.destination_ipv6 '1111:2222:3333:4444:5555:6666:7777:8888'
+      @env.destination_ipv6.should == '1111:2222:3333:4444:5555:6666:7777:8888'
+    end
+
+  end
+
   describe '#destination_mac' do
 
     it 'allows setting and reading destination MAC address, defaulting to 00:00:00:00:00' do
@@ -50,6 +60,16 @@ module Wiresnark describe Generator::DSL do
       @env.source_ip.should == '0.0.0.0'
       @env.source_ip '1.2.3.4'
       @env.source_ip.should == '1.2.3.4'
+    end
+
+  end
+
+  describe '#source_ipv6' do
+
+    it 'allows setting and reading source IPv6 address, defaulting to 0000:0000:0000:0000:0000:0000:0000:0000' do
+      @env.source_ipv6.should == '0000:0000:0000:0000:0000:0000:0000:0000'
+      @env.source_ipv6 '1111:2222:3333:4444:5555:6666:7777:8888'
+      @env.source_ipv6.should == '1111:2222:3333:4444:5555:6666:7777:8888'
     end
 
   end
