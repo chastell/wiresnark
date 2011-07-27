@@ -1,23 +1,20 @@
 module Wiresnark module Generator::DSL
 
-  def count count = nil
-    count ? @count = count : @count ||= 1
-  end
-
-  def destination_mac mac = nil
-    mac ? @destination_mac = mac : @destination_mac ||= '00:00:00:00:00:00'
-  end
-
-  def payload payload = nil
-    payload ? @payload = payload : @payload
-  end
-
-  def source_mac mac = nil
-    mac ? @source_mac = mac : @source_mac ||= '00:00:00:00:00:00'
-  end
-
-  def type type = nil
-    type ? @type = type : @type ||= 'Eth'
+  {
+    count:           1,
+    destination_mac: '00:00:00:00:00:00',
+    payload:         nil,
+    source_mac:      '00:00:00:00:00:00',
+    type:            'Eth',
+  }.each do |method, default|
+    define_method method do |value = nil|
+      ivar = :"@#{method}"
+      case
+      when value                       then instance_variable_set ivar, value
+      when instance_variable_get(ivar) then instance_variable_get ivar
+      else                                  instance_variable_set ivar, default
+      end
+    end
   end
 
 end end
