@@ -12,13 +12,11 @@ module Wiresnark module Generator::DSL
     :source_mac,
     :type,
   ].each do |name|
-    define_method name do |value = nil|
-      value.nil? ? params[name] : params[name] = value
-    end
+    define_method(name) { |value| params[name] = value }
   end
 
   def params
-    @params ||= { count: 1, type: 'Eth' }
+    @params ||= { count: 1 }
   end
 
 end end

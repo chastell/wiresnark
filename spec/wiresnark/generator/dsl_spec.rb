@@ -99,8 +99,7 @@ module Wiresnark describe Generator::DSL do
 
   describe '#type' do
 
-    it 'allows setting type, defaulting to Eth' do
-      @env.params[:type].should == 'Eth'
+    it 'allows setting type' do
       @env.type 'TCP'
       @env.params[:type].should == 'TCP'
     end
