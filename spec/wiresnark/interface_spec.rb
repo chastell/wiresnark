@@ -1,5 +1,25 @@
 module Wiresnark describe Interface do
 
+  describe '#expect' do
+
+    before do
+      @iface_name = 'Interface#expect spec interface'
+      PacketFu::Capture.should_receive(:new).with(iface: @iface_name, start: true).and_return @capturer = mock
+      @capturer.should_receive :save
+    end
+
+    it 'captures packets and returns true if they equal the passed ones' do
+      @capturer.should_receive(:array).and_return ["\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00foo", "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00bar"]
+      Interface.new(@iface_name).expect([Packet.new(payload: 'foo'), Packet.new(payload: 'bar')]).should == true
+    end
+
+    it 'captures packets and returns false if they differ from the passed ones' do
+      @capturer.should_receive(:array).and_return ["\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00foo", "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00baz"]
+      Interface.new(@iface_name).expect([Packet.new(payload: 'foo'), Packet.new(payload: 'bar')]).should == false
+    end
+
+  end
+
   describe '#inject' do
 
     before do
