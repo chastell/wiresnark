@@ -1,5 +1,9 @@
 module Wiresnark class Packet
 
+  [:payload, :type].each do |name|
+    define_method(name) { params[name] }
+  end
+
   def initialize opts = {}
     params.merge! opts
   end

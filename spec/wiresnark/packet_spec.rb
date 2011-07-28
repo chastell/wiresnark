@@ -28,4 +28,15 @@ module Wiresnark describe Packet do
 
   end
 
+  describe '#{params}' do
+
+    it 'returns the various param values' do
+      Packet.new.type.should              == 'Eth'
+      Packet.new(type: 'TCP').type.should == 'TCP'
+      Packet.new.payload.should                 == ''
+      Packet.new(payload: 'foo').payload.should == 'foo'
+    end
+
+  end
+
 end end
