@@ -42,6 +42,10 @@ module Wiresnark class Packet
     @fu_packet.to_s
   end
 
+  def to_s
+    "#{type.ljust 4} #{to_bin.split(//).map { |c| c.ord.to_s(16).rjust 2, '0' }.join ' '}"
+  end
+
   protected
 
   def params

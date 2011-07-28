@@ -75,6 +75,32 @@ module Wiresnark describe Packet do
 
   end
 
+  describe '#to_s' do
+
+    it 'returns a human-readable Packet representation' do
+      Packet.new.to_s.should == 'Eth  00 00 00 00 00 00 00 00 00 00 00 00 08 00'
+      Packet.new(
+        source_mac:      '11:22:33:44:55:66',
+        destination_mac: 'aa:bb:cc:dd:ee:ff',
+        payload:         'foo',
+      ).to_s.should == 'Eth  aa bb cc dd ee ff 11 22 33 44 55 66 08 00 66 6f 6f'
+      Packet.new(
+        type:           'IP',
+        source_ip:      '1.2.3.4',
+        destination_ip: '5.6.7.8',
+        ip_id:          0xbabe,
+        payload:        'bar',
+      ).to_s.should == 'IP   00 00 00 00 00 00 00 00 00 00 00 00 08 00 45 00 00 14 ba be 00 00 20 00 ff ff 01 02 03 04 05 06 07 08 62 61 72'
+      Packet.new(
+        type:             'IPv6',
+        source_ipv6:      '1111:2222:3333:4444:5555:6666:7777:8888',
+        destination_ipv6: 'aaaa:bbbb:cccc:dddd:eeee:ffff:1010:1111',
+        payload:          'baz',
+      ).to_s.should == 'IPv6 00 00 00 00 00 00 00 00 00 00 00 00 86 dd 60 00 00 00 00 00 00 ff 11 11 22 22 33 33 44 44 55 55 66 66 77 77 88 88 aa aa bb bb cc cc dd dd ee ee ff ff 10 10 11 11 62 61 7a'
+    end
+
+  end
+
   describe '#{params}' do
 
     it 'returns the various param values' do
