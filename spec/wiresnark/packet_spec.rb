@@ -62,8 +62,9 @@ module Wiresnark describe Packet do
         type:           'IP',
         source_ip:      '1.2.3.4',
         destination_ip: '5.6.7.8',
+        ip_id:          0xbabe,
         payload:        'bar',
-      ).to_bin.should == "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00\x45\x00\x00\x14\x00\x00\x00\x00\x20\x00\xFF\xFF\x01\x02\x03\x04\x05\x06\x07\x08bar"
+      ).to_bin.should == "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00\x45\x00\x00\x14\xba\xbe\x00\x00\x20\x00\xFF\xFF\x01\x02\x03\x04\x05\x06\x07\x08bar"
       Packet.new(
         type:             'IPv6',
         source_ipv6:      '1111:2222:3333:4444:5555:6666:7777:8888',

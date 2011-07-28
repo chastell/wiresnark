@@ -21,7 +21,7 @@ module Wiresnark class Packet
     @fu_packet.payload    = payload
     @fu_packet.eth_daddr  = destination_mac
     @fu_packet.eth_saddr  = source_mac
-    @fu_packet.ip_id      = 0                if @fu_packet.is_ip?
+    @fu_packet.ip_id      = ip_id            if @fu_packet.is_ip?
     @fu_packet.ip_daddr   = destination_ip   if @fu_packet.is_ip?
     @fu_packet.ip_saddr   = source_ip        if @fu_packet.is_ip?
     @fu_packet.ipv6_daddr = destination_ipv6 if @fu_packet.is_ipv6?
