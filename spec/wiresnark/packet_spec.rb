@@ -7,11 +7,16 @@ module Wiresnark describe Packet do
       Packet.new.destination_ipv6.should == '0000:0000:0000:0000:0000:0000:0000:0000'
       Packet.new.destination_mac.should  == '00:00:00:00:00:00'
       Packet.new.iip_byte.should         == 1
+      Packet.new.ip_id.should            be_between 0x0000, 0xffff
       Packet.new.payload.should          == ''
       Packet.new.source_ip.should        == '0.0.0.0'
       Packet.new.source_ipv6.should      == '0000:0000:0000:0000:0000:0000:0000:0000'
       Packet.new.source_mac.should       == '00:00:00:00:00:00'
       Packet.new.type.should             == 'Eth'
+    end
+
+    it 'randomises #ip_id' do
+      Packet.new.ip_id.should_not == Packet.new.ip_id
     end
 
   end

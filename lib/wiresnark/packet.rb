@@ -5,6 +5,7 @@ module Wiresnark class Packet
     :destination_ipv6,
     :destination_mac,
     :iip_byte,
+    :ip_id,
     :payload,
     :source_ip,
     :source_ipv6,
@@ -28,13 +29,13 @@ module Wiresnark class Packet
   end
 
   def == other
-    params == other.params
+    params.reject { |key, _| key == :ip_id } == other.params.reject { |key, _| key == :ip_id }
   end
 
   alias eql? ==
 
   def hash
-    params.hash
+    params.reject { |key, _| key == :ip_id }.hash
   end
 
   def to_bin
@@ -49,6 +50,7 @@ module Wiresnark class Packet
       destination_ipv6: '0000:0000:0000:0000:0000:0000:0000:0000',
       destination_mac:  '00:00:00:00:00:00',
       iip_byte:         1,
+      ip_id:            rand(0xffff),
       payload:          '',
       source_ip:        '0.0.0.0',
       source_ipv6:      '0000:0000:0000:0000:0000:0000:0000:0000',
