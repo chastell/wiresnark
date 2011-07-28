@@ -18,6 +18,17 @@ module Wiresnark describe Interface do
       Interface.new(@iface_name).expect([Packet.new(payload: 'foo'), Packet.new(payload: 'bar')]).should == false
     end
 
+    it 'puts the information about captured Packets to the passed IO' do
+      @capturer.should_receive(:array).and_return ["\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00foo", "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00bar"]
+      Interface.new(@iface_name).expect [Packet.new(payload: 'foo'), Packet.new(payload: 'bar')], output = StringIO.new
+      output.rewind
+      output.read.should == <<-END
+captured from #{@iface_name}:
+\tEth  00 00 00 00 00 00 00 00 00 00 00 00 08 00 66 6f 6f
+\tEth  00 00 00 00 00 00 00 00 00 00 00 00 08 00 62 61 72
+      END
+    end
+
   end
 
   describe '#inject' do

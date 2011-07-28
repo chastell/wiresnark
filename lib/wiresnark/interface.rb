@@ -4,10 +4,15 @@ module Wiresnark class Interface
     @name = name
   end
 
-  def expect packets
+  def expect packets, output = StringIO.new
     capturer = PacketFu::Capture.new iface: @name, start: true
     capturer.save
-    capturer.array.map { |bin| Packet.new bin } == packets
+    captured = capturer.array.map { |bin| Packet.new bin }
+
+    output.puts "captured from #{@name}:"
+    captured.each { |packet| output.puts "\t#{packet}" }
+
+    captured == packets
   end
 
   def inject packets, output = StringIO.new
