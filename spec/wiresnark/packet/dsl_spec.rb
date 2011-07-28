@@ -1,7 +1,7 @@
-module Wiresnark describe Generator::DSL do
+module Wiresnark describe Packet::DSL do
 
   before do
-    @env = Object.new.extend Generator::DSL
+    @env = Object.new.extend Packet::DSL
   end
 
   describe '#params' do

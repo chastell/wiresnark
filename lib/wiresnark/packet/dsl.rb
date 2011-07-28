@@ -1,4 +1,4 @@
-module Wiresnark module Generator::DSL
+module Wiresnark module Packet::DSL
 
   [
     :count,
