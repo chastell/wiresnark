@@ -1,5 +1,21 @@
 module Wiresnark describe Packet do
 
+  describe '.new' do
+
+    it 'sets sane defaults' do
+      Packet.new.destination_ip.should   == '0.0.0.0'
+      Packet.new.destination_ipv6.should == '0000:0000:0000:0000:0000:0000:0000:0000'
+      Packet.new.destination_mac.should  == '00:00:00:00:00:00'
+      Packet.new.iip_byte.should         == 1
+      Packet.new.payload.should          == ''
+      Packet.new.source_ip.should        == '0.0.0.0'
+      Packet.new.source_ipv6.should      == '0000:0000:0000:0000:0000:0000:0000:0000'
+      Packet.new.source_mac.should       == '00:00:00:00:00:00'
+      Packet.new.type.should             == 'Eth'
+    end
+
+  end
+
   describe '#==' do
 
     it 'tests equality' do
