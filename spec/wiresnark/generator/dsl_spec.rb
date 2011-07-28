@@ -54,6 +54,20 @@ module Wiresnark describe Generator::DSL do
 
   end
 
+  describe '#params' do
+
+    it 'allows reading the current state of params' do
+      @env.params[:count].should     == 1
+      @env.params[:source_ip].should == '0.0.0.0'
+      @env.count 7
+      @env.payload 'LOAD "*",8,1'
+      @env.params[:count].should     == 7
+      @env.params[:payload].should   == 'LOAD "*",8,1'
+      @env.params[:source_ip].should == '0.0.0.0'
+    end
+
+  end
+
   describe '#payload' do
 
     it 'allows setting and reading payload, defaulting to empty' do

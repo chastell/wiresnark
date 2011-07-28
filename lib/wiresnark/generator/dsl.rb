@@ -17,8 +17,6 @@ module Wiresnark module Generator::DSL
     end
   end
 
-  private
-
   def params
     @params ||= {
       count:            1,
