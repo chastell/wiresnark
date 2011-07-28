@@ -1,12 +1,23 @@
 module Wiresnark module Generator::DSL
 
-  private
-
-  def self.dsl_attr name
+  [
+    :count,
+    :destination_ip,
+    :destination_ipv6,
+    :destination_mac,
+    :iip_byte,
+    :payload,
+    :source_ip,
+    :source_ipv6,
+    :source_mac,
+    :type,
+  ].each do |name|
     define_method name do |value = nil|
       value.nil? ? params[name] : params[name] = value
     end
   end
+
+  private
 
   def params
     @params ||= {
@@ -22,18 +33,5 @@ module Wiresnark module Generator::DSL
       type:             'Eth',
     }
   end
-
-  public
-
-  dsl_attr :count
-  dsl_attr :destination_ip
-  dsl_attr :destination_ipv6
-  dsl_attr :destination_mac
-  dsl_attr :iip_byte
-  dsl_attr :payload
-  dsl_attr :source_ip
-  dsl_attr :source_ipv6
-  dsl_attr :source_mac
-  dsl_attr :type
 
 end end
