@@ -6,6 +6,7 @@ module Wiresnark module Generator::DSL
     :destination_ipv6,
     :destination_mac,
     :iip_byte,
+    :ip_id,
     :payload,
     :source_ip,
     :source_ipv6,

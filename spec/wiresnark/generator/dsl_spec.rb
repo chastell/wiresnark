@@ -34,6 +34,9 @@ module Wiresnark describe Generator::DSL do
       @env.iip_byte 2
       @env.params[:iip_byte].should == 2
 
+      @env.ip_id 0xbeef
+      @env.params[:ip_id].should == 0xbeef
+
       @env.payload 'LOAD "*",8,1'
       @env.params[:payload].should == 'LOAD "*",8,1'
 
