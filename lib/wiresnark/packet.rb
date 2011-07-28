@@ -16,6 +16,15 @@ module Wiresnark class Packet
 
   def initialize opts = {}
     params.merge! opts
+    @fu_packet = eval "PacketFu::#{type}Packet.new"
+    @fu_packet.payload    = payload
+    @fu_packet.eth_daddr  = destination_mac
+    @fu_packet.eth_saddr  = source_mac
+    @fu_packet.ip_id      = 0                if @fu_packet.is_ip?
+    @fu_packet.ip_daddr   = destination_ip   if @fu_packet.is_ip?
+    @fu_packet.ip_saddr   = source_ip        if @fu_packet.is_ip?
+    @fu_packet.ipv6_daddr = destination_ipv6 if @fu_packet.is_ipv6?
+    @fu_packet.ipv6_saddr = source_ipv6      if @fu_packet.is_ipv6?
   end
 
   def == other
@@ -26,6 +35,10 @@ module Wiresnark class Packet
 
   def hash
     params.hash
+  end
+
+  def to_bin
+    @fu_packet.to_s
   end
 
   protected

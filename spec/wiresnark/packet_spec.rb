@@ -44,6 +44,31 @@ module Wiresnark describe Packet do
 
   end
 
+  describe '#to_bin' do
+
+    it 'returns the binary representation' do
+      Packet.new.to_bin.should == "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00"
+      Packet.new(
+        source_mac:      '11:22:33:44:55:66',
+        destination_mac: 'aa:bb:cc:dd:ee:ff',
+        payload:         'foo',
+      ).to_bin.should == "\xAA\xBB\xCC\xDD\xEE\xFF\x11\x22\x33\x44\x55\x66\x08\x00foo"
+      Packet.new(
+        type:           'IP',
+        source_ip:      '1.2.3.4',
+        destination_ip: '5.6.7.8',
+        payload:        'bar',
+      ).to_bin.should == "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00\x45\x00\x00\x14\x00\x00\x00\x00\x20\x00\xFF\xFF\x01\x02\x03\x04\x05\x06\x07\x08bar"
+      Packet.new(
+        type:             'IPv6',
+        source_ipv6:      '1111:2222:3333:4444:5555:6666:7777:8888',
+        destination_ipv6: 'aaaa:bbbb:cccc:dddd:eeee:ffff:1010:1111',
+        payload:          'baz',
+      ).to_bin.should == "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x86\xDD\x60\x00\x00\x00\x00\x00\x00\xFF\x11\x11\x22\x22\x33\x33\x44\x44\x55\x55\x66\x66\x77\x77\x88\x88\xAA\xAA\xBB\xBB\xCC\xCC\xDD\xDD\xEE\xEE\xFF\xFF\x10\x10\x11\x11baz"
+    end
+
+  end
+
   describe '#{params}' do
 
     it 'returns the various param values' do

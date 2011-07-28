@@ -1,3 +1,5 @@
+require 'packetfu'
+
 require_relative 'wiresnark/dsl'
 require_relative 'wiresnark/generator'
 require_relative 'wiresnark/generator/dsl'
