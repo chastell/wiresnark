@@ -18,18 +18,7 @@ module Wiresnark module Generator::DSL
   end
 
   def params
-    @params ||= {
-      count:            1,
-      destination_ip:   '0.0.0.0',
-      destination_ipv6: '0000:0000:0000:0000:0000:0000:0000:0000',
-      destination_mac:  '00:00:00:00:00:00',
-      iip_byte:         1,
-      payload:          '',
-      source_ip:        '0.0.0.0',
-      source_ipv6:      '0000:0000:0000:0000:0000:0000:0000:0000',
-      source_mac:       '00:00:00:00:00:00',
-      type:             'Eth',
-    }
+    @params ||= { count: 1, type: 'Eth' }
   end
 
 end end
