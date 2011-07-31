@@ -1,5 +1,10 @@
 module Wiresnark class Interface
 
+  def self.new name
+    @interfaces       ||= {}
+    @interfaces[name] ||= super
+  end
+
   def initialize name
     @name = name
   end

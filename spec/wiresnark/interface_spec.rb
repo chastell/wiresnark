@@ -1,5 +1,15 @@
 module Wiresnark describe Interface do
 
+  describe '.new' do
+
+    it 'returns the same object for subsequent calls to the same interface' do
+      name = 'Interface.new spec interface'
+      Interface.new(name).should     equal Interface.new name
+      Interface.new(name).should_not equal Interface.new 'some other Interface.new spec interface'
+    end
+
+  end
+
   describe '#expect' do
 
     before do
