@@ -1,13 +1,19 @@
 module Wiresnark module DSL
 
-  extend self
-
   def expect_packets_at interface, &packet_spec
-    Interface.new(interface).expect Generator.generate &packet_spec
+    expectations << { interface: Interface.new(interface), packet_spec: packet_spec }
+  end
+
+  def expectations
+    @expectations ||= []
+  end
+
+  def generations
+    @generations ||= []
   end
 
   def send_packets_to interface, &packet_spec
-    Interface.new(interface).inject Generator.generate &packet_spec
+    generations << { interface: Interface.new(interface), packet_spec: packet_spec }
   end
 
 end end
