@@ -1,7 +1,6 @@
 module Wiresnark module Packet::DSL
 
   [
-    :count,
     :destination_ip,
     :destination_ipv6,
     :destination_mac,
@@ -16,8 +15,12 @@ module Wiresnark module Packet::DSL
     define_method(name) { |value| params[name] = value }
   end
 
+  def count count = nil
+    count.nil? ? @count ||= 1 : @count = count
+  end
+
   def params
-    @params ||= { count: 1 }
+    @params ||= {}
   end
 
 end end

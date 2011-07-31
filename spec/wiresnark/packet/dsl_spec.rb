@@ -4,13 +4,20 @@ module Wiresnark describe Packet::DSL do
     @env = Object.new.extend Packet::DSL
   end
 
+  describe '#count' do
+
+    it 'allows setting and reading packet count, defaulting to 1' do
+      @env.count.should == 1
+      @env.count 7
+      @env.count.should == 7
+    end
+
+  end
+
   describe '#params' do
 
-    it 'allows reading the current state of params, defaulting count to 1' do
-      @env.params[:count].should == 1
-      @env.count 7
+    it 'allows reading the current state of params' do
       @env.payload 'LOAD "*",8,1'
-      @env.params[:count].should   == 7
       @env.params[:payload].should == 'LOAD "*",8,1'
     end
 
@@ -19,9 +26,6 @@ module Wiresnark describe Packet::DSL do
   describe '#{params}' do
 
     it 'allows setting the relevant params' do
-      @env.count 7
-      @env.params[:count].should == 7
-
       @env.destination_ip '1.2.3.4'
       @env.params[:destination_ip].should == '1.2.3.4'
 
