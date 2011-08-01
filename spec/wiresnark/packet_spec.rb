@@ -44,6 +44,27 @@ module Wiresnark describe Packet do
       )
     end
 
+    it 'properly creates IIP Packets' do
+      Packet.new(
+        source_mac:      '11:22:33:44:55:66',
+        destination_mac: 'aa:bb:cc:dd:ee:ff',
+        payload:         'foo',
+      ).to_bin.should == "\xAA\xBB\xCC\xDD\xEE\xFF\x11\x22\x33\x44\x55\x66\x08\x00foo"
+      Packet.new(
+        type:            'IIP',
+        source_mac:      '11:22:33:44:55:66',
+        destination_mac: 'aa:bb:cc:dd:ee:ff',
+        payload:         'foo',
+      ).to_bin.should == "\xAA\xBB\xCC\xDD\xEE\xFF\x11\x22\x33\x44\x55\x66\x08\x00\x01foo"
+      Packet.new(
+        type:            'IIP',
+        iip_byte:        2,
+        source_mac:      '11:22:33:44:55:66',
+        destination_mac: 'aa:bb:cc:dd:ee:ff',
+        payload:         'foo',
+      ).to_bin.should == "\xAA\xBB\xCC\xDD\xEE\xFF\x11\x22\x33\x44\x55\x66\x08\x00\x02foo"
+    end
+
   end
 
   describe '#==' do
