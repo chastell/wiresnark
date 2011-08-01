@@ -9,10 +9,11 @@ module Wiresnark describe Wiresnark do
       spec_b  = Proc.new { count 3; type 'IP'  }
 
       Interface.new('lo').should_receive(:start_capture).ordered
-      Interface.new('lo').should_receive(:inject).with(Generator.generate &spec_b).ordered
-      Interface.new('lo').should_receive(:verify_capture).with(Generator.generate &spec_a).ordered
+      Interface.new('lo').should_receive(:inject).with(Generator.generate(&spec_b), $stdout).ordered
+      Interface.new('lo').should_receive(:verify_capture).with(Generator.generate(&spec_a), $stdout).ordered
 
       Wiresnark.run do
+        verbose
         expect_packets_at 'lo', &spec_a
         send_packets_to   'lo', &spec_b
       end

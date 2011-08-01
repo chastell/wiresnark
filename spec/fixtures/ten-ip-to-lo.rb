@@ -25,3 +25,5 @@ send_packets_to 'lo' do
 
   payload 'foo'
 end
+
+verbose
