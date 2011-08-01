@@ -65,14 +65,22 @@ monitoring lo:
       Interface.new('lo').start_capture
     end
 
-    it 'returns true if captured packets equal the passed ones' do
+    it 'returns true/none-missing/none-extra if captured packets equal passed ones' do
       @capturer.should_receive(:array).and_return ["\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00foo", "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00bar"]
-      Interface.new('lo').verify_capture([Packet.new(payload: 'foo'), Packet.new(payload: 'bar')]).should == true
+      Interface.new('lo').verify_capture([Packet.new(payload: 'foo'), Packet.new(payload: 'bar')]).should == {
+        result:  true,
+        missing: [],
+        extra:   [],
+      }
     end
 
-    it 'returns false if captured packets differ from the passed ones' do
+    it 'returns false/missing/extra if captured packets differ from the passed ones' do
       @capturer.should_receive(:array).and_return ["\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00foo", "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00baz"]
-      Interface.new('lo').verify_capture([Packet.new(payload: 'foo'), Packet.new(payload: 'bar')]).should == false
+      Interface.new('lo').verify_capture([Packet.new(payload: 'foo'), Packet.new(payload: 'bar')]).should == {
+        result:  false,
+        missing: [Packet.new(payload: 'bar')],
+        extra:   [Packet.new(payload: 'baz')],
+      }
     end
 
     it 'puts the information about captured Packets to the passed IO' do

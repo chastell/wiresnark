@@ -24,14 +24,18 @@ module Wiresnark class Interface
     @capture = PacketFu::Capture.new iface: @name, start: true
   end
 
-  def verify_capture packets, output = StringIO.new
+  def verify_capture expected, output = StringIO.new
     @capture.save
     captured = @capture.array.map { |bin| Packet.new bin }
 
     output.puts "captured from #{@name}:"
     captured.each { |packet| output.puts "\t#{packet}" }
 
-    captured == packets
+    {
+      result:  captured == expected,
+      missing: expected - captured,
+      extra:   captured - expected,
+    }
   end
 
 end end
