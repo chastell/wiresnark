@@ -1,4 +1,5 @@
 require 'packetfu'
+require 'stringio'
 require 'trollop'
 
 require_relative 'wiresnark/dsl'
