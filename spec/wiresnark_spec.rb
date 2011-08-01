@@ -20,4 +20,16 @@ module Wiresnark describe Wiresnark do
 
   end
 
+  describe '.run_file' do
+
+    it 'executes the code found in the passed file' do
+      Interface.new('lo').should_receive(:start_capture).ordered
+      Interface.new('lo').should_receive(:inject).ordered
+      Interface.new('lo').should_receive(:verify_capture).ordered
+
+      Wiresnark.run_file 'spec/fixtures/ten-ip-to-lo.rb'
+    end
+
+  end
+
 end end

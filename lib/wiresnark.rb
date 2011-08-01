@@ -27,4 +27,21 @@ module Wiresnark
     end
   end
 
+  def self.run_file file
+    env = Object.new.extend DSL
+    env.instance_eval File.read file
+
+    env.expectations.each do |exp|
+      exp[:interface].start_capture
+    end
+
+    env.generations.each do |gen|
+      gen[:interface].inject Generator.generate &gen[:packet_spec]
+    end
+
+    env.expectations.each do |exp|
+      exp[:interface].verify_capture Generator.generate &exp[:packet_spec]
+    end
+  end
+
 end
