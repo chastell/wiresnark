@@ -11,35 +11,29 @@ require_relative 'wiresnark/packet/dsl'
 module Wiresnark
 
   def self.run &block
-    env = Object.new.extend DSL
-    env.instance_eval &block
-
-    env.expectations.each do |exp|
-      exp[:interface].start_capture
-    end
-
-    env.generations.each do |gen|
-      gen[:interface].inject Generator.generate &gen[:packet_spec]
-    end
-
-    env.expectations.each do |exp|
-      exp[:interface].verify_capture Generator.generate &exp[:packet_spec]
-    end
+    @env = Object.new.extend DSL
+    @env.instance_eval &block
+    capture_inject_verify
   end
 
   def self.run_file file
-    env = Object.new.extend DSL
-    env.instance_eval File.read file
+    @env = Object.new.extend DSL
+    @env.instance_eval File.read file
+    capture_inject_verify
+  end
 
-    env.expectations.each do |exp|
+  private
+
+  def self.capture_inject_verify
+    @env.expectations.each do |exp|
       exp[:interface].start_capture
     end
 
-    env.generations.each do |gen|
+    @env.generations.each do |gen|
       gen[:interface].inject Generator.generate &gen[:packet_spec]
     end
 
-    env.expectations.each do |exp|
+    @env.expectations.each do |exp|
       exp[:interface].verify_capture Generator.generate &exp[:packet_spec]
     end
   end
