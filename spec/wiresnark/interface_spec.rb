@@ -33,6 +33,21 @@ injected into lo:
 
   end
 
+  describe '#monitor' do
+
+    it 'outputs captured Packets to the given output' do
+      Pcap.should_receive(:open_live).with('lo', 0xffff, false, 1).and_return ["\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00bar", "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00foo"]
+      Interface.new('lo').monitor output = StringIO.new
+      output.rewind
+      output.read.should == <<-END
+monitoring lo:
+\tEth  00 00 00 00 00 00 00 00 00 00 00 00 08 00 62 61 72
+\tEth  00 00 00 00 00 00 00 00 00 00 00 00 08 00 66 6f 6f
+      END
+    end
+
+  end
+
   describe '#start_capture' do
 
     it 'starts packet capture by the given interface' do

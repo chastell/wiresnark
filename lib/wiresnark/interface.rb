@@ -15,6 +15,11 @@ module Wiresnark class Interface
     packets.each { |packet| output.puts "\t#{packet}" }
   end
 
+  def monitor output
+    output.puts "monitoring #{@name}:"
+    Pcap.open_live(@name, 0xffff, false, 1).each { |packet| output.puts "\t#{Packet.new packet}" }
+  end
+
   def start_capture
     @capture = PacketFu::Capture.new iface: @name, start: true
   end
