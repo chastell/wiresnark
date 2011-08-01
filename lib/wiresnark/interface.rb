@@ -9,21 +9,24 @@ module Wiresnark class Interface
     @name = name
   end
 
-  def expect packets, output = StringIO.new
-    capturer = PacketFu::Capture.new iface: @name, start: true
-    capturer.save
-    captured = capturer.array.map { |bin| Packet.new bin }
+  def inject packets, output = StringIO.new
+    PacketFu::Inject.new(@name).inject array: packets.map(&:to_bin)
+    output.puts "injected into #{@name}:"
+    packets.each { |packet| output.puts "\t#{packet}" }
+  end
+
+  def start_capture
+    @capture = PacketFu::Capture.new iface: @name, start: true
+  end
+
+  def verify_capture packets, output = StringIO.new
+    @capture.save
+    captured = @capture.array.map { |bin| Packet.new bin }
 
     output.puts "captured from #{@name}:"
     captured.each { |packet| output.puts "\t#{packet}" }
 
     captured == packets
-  end
-
-  def inject packets, output = StringIO.new
-    PacketFu::Inject.new(@name).inject array: packets.map(&:to_bin)
-    output.puts "injected into #{@name}:"
-    packets.each { |packet| output.puts "\t#{packet}" }
   end
 
 end end
