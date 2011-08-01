@@ -1,13 +1,22 @@
 module Wiresnark class Executable
 
   def initialize args = ARGV
-    Trollop.options
+    opts = Trollop.options args do
+      opt :monitor, 'Monitor a given interface.', type: String
+    end
+
     Trollop.die "missing: #{args.reject { |f| File.exists? f }.join ', '}" unless args.all? { |f| File.exists? f }
-    @files = args
+
+    @files   = args
+    @monitor = opts[:monitor]
   end
 
-  def run
-    @files.each { |file| Wiresnark.run_file file }
+  def run output = $stdout
+    if @monitor
+      Interface.new(@monitor).monitor output
+    else
+      @files.each { |file| Wiresnark.run_file file }
+    end
   end
 
 end end
