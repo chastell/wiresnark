@@ -38,4 +38,15 @@ module Wiresnark describe DSL do
 
   end
 
+  describe '#verbose, #verbose?' do
+
+    it 'sets verbose flag to true (default: false) and allows reading it' do
+      env = Object.new.extend DSL
+      env.should_not be_verbose
+      env.verbose
+      env.should be_verbose
+    end
+
+  end
+
 end end

@@ -16,4 +16,12 @@ module Wiresnark module DSL
     generations << { interface: Interface.new(name), packet_spec: packet_spec }
   end
 
+  def verbose
+    @verbose = true
+  end
+
+  def verbose?
+    @verbose
+  end
+
 end end
