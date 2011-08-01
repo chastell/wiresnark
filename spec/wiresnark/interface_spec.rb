@@ -83,14 +83,18 @@ monitoring lo:
       }
     end
 
-    it 'puts the information about captured Packets to the passed IO' do
-      @capturer.should_receive(:array).and_return ["\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00foo", "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00bar"]
+    it 'puts the information about captured/missing/extra Packets to the passed IO' do
+      @capturer.should_receive(:array).and_return ["\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00foo", "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00baz"]
       Interface.new('lo').verify_capture [Packet.new(payload: 'foo'), Packet.new(payload: 'bar')], output = StringIO.new
       output.rewind
       output.read.should == <<-END
 captured from lo:
 \tEth  00 00 00 00 00 00 00 00 00 00 00 00 08 00 66 6f 6f
+\tEth  00 00 00 00 00 00 00 00 00 00 00 00 08 00 62 61 7a
+missing from lo:
 \tEth  00 00 00 00 00 00 00 00 00 00 00 00 08 00 62 61 72
+extra at lo:
+\tEth  00 00 00 00 00 00 00 00 00 00 00 00 08 00 62 61 7a
       END
     end
 

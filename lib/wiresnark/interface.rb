@@ -28,14 +28,19 @@ module Wiresnark class Interface
     @capture.save
     captured = @capture.array.map { |bin| Packet.new bin }
 
+    missing = expected - captured
+    extra   = captured - expected
+
     output.puts "captured from #{@name}:"
     captured.each { |packet| output.puts "\t#{packet}" }
 
-    {
-      result:  captured == expected,
-      missing: expected - captured,
-      extra:   captured - expected,
-    }
+    output.puts "missing from #{@name}:" unless missing.empty?
+    missing.each { |packet| output.puts "\t#{packet}" }
+
+    output.puts "extra at #{@name}:" unless extra.empty?
+    extra.each { |packet| output.puts "\t#{packet}" }
+
+    { result: captured == expected, missing: missing, extra: extra }
   end
 
 end end
