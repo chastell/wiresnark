@@ -12,7 +12,7 @@ module Wiresnark describe Interface do
   describe '#inject' do
 
     before do
-      PacketFu::Inject.should_receive(:new).with('lo').and_return @injector = mock
+      PacketFu::Inject.should_receive(:new).with(iface: 'lo').and_return @injector = mock
     end
 
     it 'injects the passed Packets into the Interface' do
