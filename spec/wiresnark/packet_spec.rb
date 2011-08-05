@@ -3,18 +3,11 @@ module Wiresnark describe Packet do
   describe '.new' do
 
     it 'sets sane defaults' do
-      Packet.new.destination_ip.should   == '0.0.0.0'
       Packet.new.destination_mac.should  == '00:00:00:00:00:00'
       Packet.new.iip_byte.should         == 1
-      Packet.new.ip_id.should            be_between 0x0000, 0xffff
       Packet.new.payload.should          == ''
-      Packet.new.source_ip.should        == '0.0.0.0'
       Packet.new.source_mac.should       == '00:00:00:00:00:00'
       Packet.new.type.should             == 'Eth'
-    end
-
-    it 'randomises #ip_id' do
-      Packet.new.ip_id.should_not == Packet.new.ip_id
     end
 
     it 'creates Packet by parsing the passed binary' do
@@ -24,14 +17,6 @@ module Wiresnark describe Packet do
         source_mac:      '11:22:33:44:55:66',
         destination_mac: 'aa:bb:cc:dd:ee:ff',
         payload:         'foo',
-      )
-
-      Packet.new("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00\x45\x00\x00\x14\xba\xbe\x00\x00\x20\x00\xFF\xFF\x01\x02\x03\x04\x05\x06\x07\x08bar").should == Packet.new(
-        type:           'IP',
-        source_ip:      '1.2.3.4',
-        destination_ip: '5.6.7.8',
-        ip_id:          0xbabe,
-        payload:        'bar',
       )
     end
 
@@ -95,13 +80,6 @@ module Wiresnark describe Packet do
         destination_mac: 'aa:bb:cc:dd:ee:ff',
         payload:         'foo',
       ).to_bin.should == "\xAA\xBB\xCC\xDD\xEE\xFF\x11\x22\x33\x44\x55\x66\x08\x00foo"
-      Packet.new(
-        type:           'IP',
-        source_ip:      '1.2.3.4',
-        destination_ip: '5.6.7.8',
-        ip_id:          0xbabe,
-        payload:        'bar',
-      ).to_bin.should == "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00\x45\x00\x00\x14\xba\xbe\x00\x00\x20\x00\xFF\xFF\x01\x02\x03\x04\x05\x06\x07\x08bar"
     end
 
   end
@@ -115,13 +93,6 @@ module Wiresnark describe Packet do
         destination_mac: 'aa:bb:cc:dd:ee:ff',
         payload:         'foo',
       ).to_s.should == 'Eth  aa bb cc dd ee ff 11 22 33 44 55 66 08 00 66 6f 6f'
-      Packet.new(
-        type:           'IP',
-        source_ip:      '1.2.3.4',
-        destination_ip: '5.6.7.8',
-        ip_id:          0xbabe,
-        payload:        'bar',
-      ).to_s.should == 'IP   00 00 00 00 00 00 00 00 00 00 00 00 08 00 45 00 00 14 ba be 00 00 20 00 ff ff 01 02 03 04 05 06 07 08 62 61 72'
     end
 
   end

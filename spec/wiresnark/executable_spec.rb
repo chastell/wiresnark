@@ -36,7 +36,7 @@ monitoring lo:
 
     it 'executes the passed files' do
       Wiresnark.should_receive :capture_inject_verify
-      Executable.new(['spec/fixtures/ten-ip-to-lo.rb']).run
+      Executable.new(['spec/fixtures/ten-iip-to-lo.rb']).run
     end
 
   end

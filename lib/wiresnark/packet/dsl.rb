@@ -1,12 +1,9 @@
 module Wiresnark module Packet::DSL
 
   [
-    :destination_ip,
     :destination_mac,
     :iip_byte,
-    :ip_id,
     :payload,
-    :source_ip,
     :source_mac,
     :type,
   ].each do |name|

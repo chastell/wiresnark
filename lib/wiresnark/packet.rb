@@ -1,12 +1,9 @@
 module Wiresnark class Packet
 
   [
-    :destination_ip,
     :destination_mac,
     :iip_byte,
-    :ip_id,
     :payload,
-    :source_ip,
     :source_mac,
     :type,
   ].each do |name|
@@ -23,9 +20,6 @@ module Wiresnark class Packet
 
       @fu_packet.eth_daddr  = destination_mac
       @fu_packet.eth_saddr  = source_mac
-      @fu_packet.ip_id      = ip_id            if @fu_packet.is_ip?
-      @fu_packet.ip_daddr   = destination_ip   if @fu_packet.is_ip?
-      @fu_packet.ip_saddr   = source_ip        if @fu_packet.is_ip?
 
     when String
       @fu_packet = PacketFu::Packet.parse arg
@@ -35,22 +29,17 @@ module Wiresnark class Packet
         destination_mac: @fu_packet.eth_daddr,
         source_mac:      @fu_packet.eth_saddr,
       })
-      params.merge!({
-        ip_id:          @fu_packet.ip_id,
-        destination_ip: @fu_packet.ip_daddr,
-        source_ip:      @fu_packet.ip_saddr,
-      }) if @fu_packet.is_ip?
     end
   end
 
   def == other
-    params.reject { |key, _| key == :ip_id } == other.params.reject { |key, _| key == :ip_id }
+    params == other.params
   end
 
   alias eql? ==
 
   def hash
-    params.reject { |key, _| key == :ip_id }.hash
+    params.hash
   end
 
   def to_bin
@@ -65,12 +54,9 @@ module Wiresnark class Packet
 
   def params
     @params ||= {
-      destination_ip:   '0.0.0.0',
       destination_mac:  '00:00:00:00:00:00',
       iip_byte:         1,
-      ip_id:            rand(0xffff),
       payload:          '',
-      source_ip:        '0.0.0.0',
       source_mac:       '00:00:00:00:00:00',
       type:             'Eth',
     }

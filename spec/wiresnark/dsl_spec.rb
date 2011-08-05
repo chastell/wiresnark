@@ -8,7 +8,7 @@ module Wiresnark describe DSL do
 
     it 'stores the interface + expectation info in the extended Object' do
       spec_a  = Proc.new { count 2; type 'TCP' }
-      spec_b  = Proc.new { count 3; type 'IP'  }
+      spec_b  = Proc.new { count 3; type 'IIP' }
 
       @env.expect_packets_at 'lo', &spec_a
       @env.expect_packets_at 'lo', &spec_b
@@ -25,7 +25,7 @@ module Wiresnark describe DSL do
 
     it 'stores the interface + generation info in the extended Object' do
       spec_a  = Proc.new { count 2; type 'TCP' }
-      spec_b  = Proc.new { count 3; type 'IP'  }
+      spec_b  = Proc.new { count 3; type 'IIP' }
 
       @env.send_packets_to 'lo', &spec_a
       @env.send_packets_to 'lo', &spec_b
