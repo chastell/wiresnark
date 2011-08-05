@@ -47,7 +47,7 @@ module Wiresnark describe Packet do
 
     it 'tests equality' do
       Packet.new.should                  == Packet.new(type: 'Eth', payload: '')
-      Packet.new(type: 'Eth').should_not == Packet.new(type: 'TCP')
+      Packet.new(type: 'Eth').should_not == Packet.new(type: 'IIP')
       Packet.new(type: 'Eth').should_not == Packet.new(type: 'Eth', payload: 'foo')
     end
 
@@ -57,7 +57,7 @@ module Wiresnark describe Packet do
 
     it 'matches #== for equality' do
       Packet.new.should                  be_eql Packet.new(type: 'Eth', payload: '')
-      Packet.new(type: 'Eth').should_not be_eql Packet.new(type: 'TCP')
+      Packet.new(type: 'Eth').should_not be_eql Packet.new(type: 'IIP')
       Packet.new(type: 'Eth').should_not be_eql Packet.new(type: 'Eth', payload: 'foo')
     end
 
@@ -101,7 +101,7 @@ module Wiresnark describe Packet do
 
     it 'returns the various param values' do
       Packet.new.type.should              == 'Eth'
-      Packet.new(type: 'TCP').type.should == 'TCP'
+      Packet.new(type: 'IIP').type.should == 'IIP'
       Packet.new.payload.should                 == ''
       Packet.new(payload: 'foo').payload.should == 'foo'
     end
