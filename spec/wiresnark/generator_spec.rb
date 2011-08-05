@@ -15,7 +15,7 @@ module Wiresnark module Generator
     end
 
     it 'resets on every generation' do
-      Generator.generate { count 2; type 'IPv6' }.should == [Packet.new(type: 'IPv6'), Packet.new(type: 'IPv6')]
+      Generator.generate { count 2; type 'IIP' }.should == [Packet.new(type: 'IIP'), Packet.new(type: 'IIP')]
       Generator.generate {}.should == [Packet.new]
     end
 

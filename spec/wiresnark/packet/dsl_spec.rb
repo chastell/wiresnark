@@ -29,9 +29,6 @@ module Wiresnark describe Packet::DSL do
       @env.destination_ip '1.2.3.4'
       @env.params[:destination_ip].should == '1.2.3.4'
 
-      @env.destination_ipv6 '1111:2222:3333:4444:5555:6666:7777:8888'
-      @env.params[:destination_ipv6].should == '1111:2222:3333:4444:5555:6666:7777:8888'
-
       @env.destination_mac '11:22:33:44:55:66'
       @env.params[:destination_mac].should == '11:22:33:44:55:66'
 
@@ -46,9 +43,6 @@ module Wiresnark describe Packet::DSL do
 
       @env.source_ip '1.2.3.4'
       @env.params[:source_ip].should == '1.2.3.4'
-
-      @env.source_ipv6 '1111:2222:3333:4444:5555:6666:7777:8888'
-      @env.params[:source_ipv6].should == '1111:2222:3333:4444:5555:6666:7777:8888'
 
       @env.source_mac '11:22:33:44:55:66'
       @env.params[:source_mac].should == '11:22:33:44:55:66'
