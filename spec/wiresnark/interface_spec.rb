@@ -62,11 +62,11 @@ monitoring lo:
   describe '#verify_capture' do
 
     before do
-      Pcap.should_receive(:open_live).with('lo', 0xffff, false, 1).and_return @stream = mock
+      Pcap.should_receive(:open_live).with('lo', 0xffff, false, 1).and_return stream = mock
+      stream.should_receive(:next).and_return "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00foo", "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00bar", nil
     end
 
     it 'returns true/none-missing/none-extra if captured packets equal passed ones' do
-      @stream.should_receive(:next).and_return "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00foo", "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00bar", nil
       Interface.new('lo').verify_capture([Packet.new(payload: 'foo'), Packet.new(payload: 'bar')]).should == {
         result:  true,
         missing: [],
@@ -75,26 +75,24 @@ monitoring lo:
     end
 
     it 'returns false/missing/extra if captured packets differ from the passed ones' do
-      @stream.should_receive(:next).and_return "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00foo", "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00baz", nil
-      Interface.new('lo').verify_capture([Packet.new(payload: 'foo'), Packet.new(payload: 'bar')]).should == {
+      Interface.new('lo').verify_capture([Packet.new(payload: 'foo'), Packet.new(payload: 'baz')]).should == {
         result:  false,
-        missing: [Packet.new(payload: 'bar')],
-        extra:   [Packet.new(payload: 'baz')],
+        missing: [Packet.new(payload: 'baz')],
+        extra:   [Packet.new(payload: 'bar')],
       }
     end
 
     it 'puts the information about captured/missing/extra Packets to the passed IO' do
-      @stream.should_receive(:next).and_return "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00foo", "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00baz", nil
-      Interface.new('lo').verify_capture [Packet.new(payload: 'foo'), Packet.new(payload: 'bar')], output = StringIO.new
+      Interface.new('lo').verify_capture [Packet.new(payload: 'foo'), Packet.new(payload: 'baz')], output = StringIO.new
       output.rewind
       output.read.should == <<-END
 captured from lo:
 \tEth  00 00 00 00 00 00 00 00 00 00 00 00 08 00 66 6f 6f
-\tEth  00 00 00 00 00 00 00 00 00 00 00 00 08 00 62 61 7a
-missing from lo:
 \tEth  00 00 00 00 00 00 00 00 00 00 00 00 08 00 62 61 72
-extra at lo:
+missing from lo:
 \tEth  00 00 00 00 00 00 00 00 00 00 00 00 08 00 62 61 7a
+extra at lo:
+\tEth  00 00 00 00 00 00 00 00 00 00 00 00 08 00 62 61 72
       END
     end
 
