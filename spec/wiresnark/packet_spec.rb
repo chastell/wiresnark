@@ -49,6 +49,16 @@ module Wiresnark describe Packet do
 
   end
 
+  describe '#destination_mac=' do
+
+    it 'sets destination MAC from human-readable form' do
+      packet = Packet.new
+      packet.destination_mac = 'aa:bb:cc:dd:ee:ff'
+      packet.destination_mac.should == 'aa:bb:cc:dd:ee:ff'
+    end
+
+  end
+
   describe '#eql?' do
 
     it 'matches #== for equality' do
@@ -76,10 +86,33 @@ module Wiresnark describe Packet do
 
   end
 
+  describe '#payload=' do
+
+    it 'sets payload, regardless of packet type' do
+      eth = Packet.new type: 'Eth'
+      can = Packet.new type: 'CAN'
+      eth.payload = 'foo'
+      can.payload = 'bar'
+      eth.payload.should == 'foo'
+      can.payload.should == 'bar'
+    end
+
+  end
+
   describe '#source_mac' do
 
     it 'returns human-readable source MAC' do
       Packet.new(source_mac: '11:22:33:44:55:66').source_mac.should == '11:22:33:44:55:66'
+    end
+
+  end
+
+  describe '#source_mac=' do
+
+    it 'sets source MAC from human-readable form' do
+      packet = Packet.new
+      packet.source_mac = '11:22:33:44:55:66'
+      packet.source_mac.should == '11:22:33:44:55:66'
     end
 
   end
@@ -120,6 +153,28 @@ module Wiresnark describe Packet do
       Packet.new(type: 'CAN').type.should == 'CAN'
       Packet.new(type: 'DSS').type.should == 'DSS'
       Packet.new(type: 'MGT').type.should == 'MGT'
+    end
+
+  end
+
+  describe '#type=' do
+
+    it 'sets packet type' do
+      eth_qos = Packet.new type: 'Eth'
+      eth_qos.type = 'QoS'
+      eth_qos.type.should == 'QoS'
+
+      can_eth = Packet.new type: 'CAN'
+      can_eth.type = 'Eth'
+      can_eth.type.should == 'Eth'
+
+      dss_mgt = Packet.new type: 'DSS'
+      dss_mgt.type = 'MGT'
+      dss_mgt.type.should == 'MGT'
+
+      eth_eth = Packet.new type: 'Eth'
+      eth_eth.type = 'Eth'
+      eth_eth.type.should == 'Eth'
     end
 
   end

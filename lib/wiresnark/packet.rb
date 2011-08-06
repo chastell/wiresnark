@@ -36,6 +36,10 @@ module Wiresnark class Packet
     @bin[0..5].unpack('H2H2H2H2H2H2').join ':'
   end
 
+  def destination_mac= mac
+    @bin[0..5] = mac.split(':').pack 'H2H2H2H2H2H2'
+  end
+
   alias eql? ==
 
   def hash
@@ -46,8 +50,16 @@ module Wiresnark class Packet
     type == 'Eth' ? @bin[14..-1] : @bin[15..-1]
   end
 
+  def payload= payload
+    type == 'Eth' ? @bin[14..-1] = payload : @bin[15..-1] = payload
+  end
+
   def source_mac
     @bin[6..11].unpack('H2H2H2H2H2H2').join ':'
+  end
+
+  def source_mac= mac
+    @bin[6..11] = mac.split(':').pack 'H2H2H2H2H2H2'
   end
 
   def to_bin
@@ -60,6 +72,10 @@ module Wiresnark class Packet
 
   def type
     IIPTypes[@bin[14]] or 'Eth'
+  end
+
+  def type= type
+    self.type == 'Eth' ? @bin.insert(14, IIPBytes[type]) : @bin[14] = IIPBytes[type]
   end
 
 end end
