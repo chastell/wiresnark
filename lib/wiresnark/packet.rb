@@ -13,16 +13,11 @@ module Wiresnark class Packet
   def initialize arg = {}
     case arg
     when Hash
-      arg[:destination_mac] ||= '00:00:00:00:00:00'
-      arg[:payload]         ||= ''
-      arg[:source_mac]      ||= '00:00:00:00:00:00'
-      arg[:type]            ||= 'Eth'
-      @bin =
-        arg[:destination_mac].split(':').pack('H2H2H2H2H2H2') +
-        arg[:source_mac].split(':').pack('H2H2H2H2H2H2') +
-        "\x08\x00" +
-        IIPBytes[arg[:type]] +
-        arg[:payload]
+      @bin = "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00"
+      self.destination_mac = arg[:destination_mac] if arg[:destination_mac]
+      self.payload         = arg[:payload]         if arg[:payload]
+      self.source_mac      = arg[:source_mac]      if arg[:source_mac]
+      self.type            = arg[:type]            if arg[:type]
     when String
       @bin = arg
     end
