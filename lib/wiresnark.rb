@@ -28,10 +28,6 @@ module Wiresnark
   def self.capture_inject_verify
     output = @env.verbose? ? $stdout : StringIO.new
 
-    @env.expectations.each do |exp|
-      exp[:interface].start_capture
-    end
-
     @env.generations.each do |gen|
       gen[:interface].inject Generator.generate(&gen[:packet_spec]), output
     end

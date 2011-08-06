@@ -23,9 +23,6 @@ module Wiresnark class Interface
     @stream.each { |packet| output.puts "\t#{Packet.new packet}" }
   end
 
-  def start_capture
-  end
-
   def verify_capture expected, output = StringIO.new
     captured = []
     while bin = @stream.next

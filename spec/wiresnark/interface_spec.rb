@@ -50,15 +50,6 @@ monitoring lo:
 
   end
 
-  describe '#start_capture' do
-
-    it 'starts packet capture by the given interface' do
-      Pcap.should_receive(:open_live).with 'lo', 0xffff, false, 1
-      Interface.new('lo').start_capture
-    end
-
-  end
-
   describe '#verify_capture' do
 
     before do
