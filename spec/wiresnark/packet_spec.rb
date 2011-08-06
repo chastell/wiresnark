@@ -4,7 +4,6 @@ module Wiresnark describe Packet do
 
     it 'sets sane defaults' do
       Packet.new.destination_mac.should  == '00:00:00:00:00:00'
-      Packet.new.iip_byte.should         == 1
       Packet.new.payload.should          == ''
       Packet.new.source_mac.should       == '00:00:00:00:00:00'
       Packet.new.type.should             == 'Eth'
@@ -32,13 +31,6 @@ module Wiresnark describe Packet do
         destination_mac: 'aa:bb:cc:dd:ee:ff',
         payload:         'foo',
       ).to_bin.should == "\xAA\xBB\xCC\xDD\xEE\xFF\x11\x22\x33\x44\x55\x66\x08\x00\x01foo"
-      Packet.new(
-        type:            'IIP',
-        iip_byte:        2,
-        source_mac:      '11:22:33:44:55:66',
-        destination_mac: 'aa:bb:cc:dd:ee:ff',
-        payload:         'foo',
-      ).to_bin.should == "\xAA\xBB\xCC\xDD\xEE\xFF\x11\x22\x33\x44\x55\x66\x08\x00\x02foo"
     end
 
   end

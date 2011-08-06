@@ -2,7 +2,6 @@ module Wiresnark class Packet
 
   [
     :destination_mac,
-    :iip_byte,
     :payload,
     :source_mac,
     :type,
@@ -16,7 +15,7 @@ module Wiresnark class Packet
     when Hash
       params.merge! arg
       @fu_packet         = type == 'IIP' ? eval('PacketFu::EthPacket.new') : eval("PacketFu::#{type}Packet.new")
-      @fu_packet.payload = type == 'IIP' ? iip_byte.chr + payload          : payload
+      @fu_packet.payload = type == 'IIP' ? "\x01" + payload                : payload
 
       @fu_packet.eth_daddr  = destination_mac
       @fu_packet.eth_saddr  = source_mac
@@ -55,7 +54,6 @@ module Wiresnark class Packet
   def params
     @params ||= {
       destination_mac:  '00:00:00:00:00:00',
-      iip_byte:         1,
       payload:          '',
       source_mac:       '00:00:00:00:00:00',
       type:             'Eth',

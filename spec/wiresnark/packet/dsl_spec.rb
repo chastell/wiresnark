@@ -29,9 +29,6 @@ module Wiresnark describe Packet::DSL do
       @env.destination_mac '11:22:33:44:55:66'
       @env.params[:destination_mac].should == '11:22:33:44:55:66'
 
-      @env.iip_byte 2
-      @env.params[:iip_byte].should == 2
-
       @env.payload 'LOAD "*",8,1'
       @env.params[:payload].should == 'LOAD "*",8,1'
 

@@ -2,7 +2,6 @@ module Wiresnark module Packet::DSL
 
   [
     :destination_mac,
-    :iip_byte,
     :payload,
     :source_mac,
     :type,
