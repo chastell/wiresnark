@@ -1,7 +1,7 @@
 expect_packets_at 'lo' do
   count 10
 
-  type 'IIP 1'
+  type 'QoS'
 
   source_mac      '11:22:33:44:55:66'
   destination_mac 'aa:bb:cc:dd:ee:ff'
@@ -12,7 +12,7 @@ end
 send_packets_to 'lo' do
   count 10
 
-  type 'IIP 1'
+  type 'QoS'
 
   source_mac      '11:22:33:44:55:66'
   destination_mac 'aa:bb:cc:dd:ee:ff'

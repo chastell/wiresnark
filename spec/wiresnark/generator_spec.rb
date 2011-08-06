@@ -11,11 +11,11 @@ module Wiresnark module Generator
     end
 
     it 'makes it possible to set the type in the passed block' do
-      Generator.generate { type 'IIP 1' }.should == [Packet.new(type: 'IIP 1')]
+      Generator.generate { type 'QoS' }.should == [Packet.new(type: 'QoS')]
     end
 
     it 'resets on every generation' do
-      Generator.generate { count 2; type 'IIP 1' }.should == [Packet.new(type: 'IIP 1'), Packet.new(type: 'IIP 1')]
+      Generator.generate { count 2; type 'QoS' }.should == [Packet.new(type: 'QoS'), Packet.new(type: 'QoS')]
       Generator.generate {}.should == [Packet.new]
     end
 

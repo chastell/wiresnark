@@ -1,5 +1,12 @@
 module Wiresnark class Packet
 
+  IIPBytes = {
+    'QoS' => "\x01",
+    'CAN' => "\x02",
+  }
+
+  IIPTypes = IIPBytes.invert
+
   [
     :destination_mac,
     :payload,
@@ -15,7 +22,7 @@ module Wiresnark class Packet
     when Hash
       params.merge! arg
       @fu_packet           = PacketFu::EthPacket.new
-      @fu_packet.payload   = type.start_with?('IIP ') ? type[4].to_i.chr + payload : payload
+      @fu_packet.payload   = type == 'Eth' ? payload : IIPBytes[type] + payload
       @fu_packet.eth_daddr = destination_mac
       @fu_packet.eth_saddr = source_mac
 
@@ -28,8 +35,8 @@ module Wiresnark class Packet
       })
       params.merge!({
         payload: @fu_packet.payload[1..-1],
-        type:    "IIP #{@fu_packet.payload[0].ord}",
-      }) if ("\x01".."\x04").include? @fu_packet.payload[0]
+        type:    IIPTypes[@fu_packet.payload[0]],
+      }) if IIPTypes[@fu_packet.payload[0]]
     end
   end
 

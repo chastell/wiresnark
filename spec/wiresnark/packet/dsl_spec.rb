@@ -35,8 +35,8 @@ module Wiresnark describe Packet::DSL do
       @env.source_mac '11:22:33:44:55:66'
       @env.params[:source_mac].should == '11:22:33:44:55:66'
 
-      @env.type 'IIP 1'
-      @env.params[:type].should == 'IIP 1'
+      @env.type 'QoS'
+      @env.params[:type].should == 'QoS'
     end
 
   end
