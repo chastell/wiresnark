@@ -1,14 +1,12 @@
 module Wiresnark class Packet
 
-  IIPBytes = {
+  TypeBytes = {
     'Eth' => '',
     'QoS' => "\x01",
     'CAN' => "\x02",
     'DSS' => "\x03",
     'MGT' => "\x04",
   }
-
-  IIPTypes = IIPBytes.invert
 
   def initialize arg = {}
     case arg
@@ -66,11 +64,11 @@ module Wiresnark class Packet
   end
 
   def type
-    IIPTypes[@bin[14]] or 'Eth'
+    TypeBytes.invert[@bin[14]] or 'Eth'
   end
 
   def type= type
-    self.type == 'Eth' ? @bin.insert(14, IIPBytes[type]) : @bin[14] = IIPBytes[type]
+    self.type == 'Eth' ? @bin.insert(14, TypeBytes[type]) : @bin[14] = TypeBytes[type]
   end
 
 end end
