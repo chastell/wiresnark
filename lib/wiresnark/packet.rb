@@ -3,6 +3,8 @@ module Wiresnark class Packet
   IIPBytes = {
     'QoS' => "\x01",
     'CAN' => "\x02",
+    'DSS' => "\x03",
+    'MGT' => "\x04",
   }
 
   IIPTypes = IIPBytes.invert

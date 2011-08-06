@@ -16,13 +16,17 @@ module Wiresnark describe Packet do
         destination_mac: 'aa:bb:cc:dd:ee:ff',
         payload:         'foo',
       )
-      Packet.new("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00\x01bar").should == Packet.new(payload: 'bar', type: 'QoS')
-      Packet.new("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00\x02baz").should == Packet.new(payload: 'baz', type: 'CAN')
+      Packet.new("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00\x01foo").should == Packet.new(payload: 'foo', type: 'QoS')
+      Packet.new("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00\x02bar").should == Packet.new(payload: 'bar', type: 'CAN')
+      Packet.new("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00\x03baz").should == Packet.new(payload: 'baz', type: 'DSS')
+      Packet.new("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00\x04qux").should == Packet.new(payload: 'qux', type: 'MGT')
     end
 
     it 'properly creates IIP Packets' do
-      Packet.new(payload: 'bar', type: 'QoS').to_bin.should == "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00\x01bar"
-      Packet.new(payload: 'baz', type: 'CAN').to_bin.should == "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00\x02baz"
+      Packet.new(payload: 'foo', type: 'QoS').to_bin.should == "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00\x01foo"
+      Packet.new(payload: 'bar', type: 'CAN').to_bin.should == "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00\x02bar"
+      Packet.new(payload: 'baz', type: 'DSS').to_bin.should == "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00\x03baz"
+      Packet.new(payload: 'qux', type: 'MGT').to_bin.should == "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00\x04qux"
     end
 
   end
