@@ -41,6 +41,14 @@ module Wiresnark describe Packet do
 
   end
 
+  describe '#destination_mac' do
+
+    it 'returns human-readable destination MAC' do
+      Packet.new(destination_mac: 'aa:bb:cc:dd:ee:ff').destination_mac.should == 'aa:bb:cc:dd:ee:ff'
+    end
+
+  end
+
   describe '#eql?' do
 
     it 'matches #== for equality' do
@@ -55,6 +63,23 @@ module Wiresnark describe Packet do
 
     it 'returns the same hash for eql? Packets' do
       Packet.new.hash.should == Packet.new(type: 'Eth', payload: '').hash
+    end
+
+  end
+
+  describe '#payload' do
+
+    it 'returns payload, regardless of packet type' do
+      Packet.new(payload: 'foo', type: 'Eth').payload.should == 'foo'
+      Packet.new(payload: 'foo', type: 'CAN').payload.should == 'foo'
+    end
+
+  end
+
+  describe '#source_mac' do
+
+    it 'returns human-readable source MAC' do
+      Packet.new(source_mac: '11:22:33:44:55:66').source_mac.should == '11:22:33:44:55:66'
     end
 
   end
@@ -81,18 +106,20 @@ module Wiresnark describe Packet do
         source_mac:      '11:22:33:44:55:66',
         destination_mac: 'aa:bb:cc:dd:ee:ff',
         payload:         'foo',
-      ).to_s.should == 'Eth  aa bb cc dd ee ff 11 22 33 44 55 66 08 00 66 6f 6f'
+        type:            'DSS',
+      ).to_s.should == 'DSS  aa bb cc dd ee ff 11 22 33 44 55 66 08 00 03 66 6f 6f'
     end
 
   end
 
-  describe '#{params}' do
+  describe '#type' do
 
-    it 'returns the various param values' do
-      Packet.new.type.should              == 'Eth'
+    it 'returns packet type' do
+      Packet.new(type: 'Eth').type.should == 'Eth'
       Packet.new(type: 'QoS').type.should == 'QoS'
-      Packet.new.payload.should                 == ''
-      Packet.new(payload: 'foo').payload.should == 'foo'
+      Packet.new(type: 'CAN').type.should == 'CAN'
+      Packet.new(type: 'DSS').type.should == 'DSS'
+      Packet.new(type: 'MGT').type.should == 'MGT'
     end
 
   end

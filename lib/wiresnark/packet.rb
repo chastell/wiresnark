@@ -1,6 +1,7 @@
 module Wiresnark class Packet
 
   IIPBytes = {
+    'Eth' => '',
     'QoS' => "\x01",
     'CAN' => "\x02",
     'DSS' => "\x03",
@@ -9,66 +10,56 @@ module Wiresnark class Packet
 
   IIPTypes = IIPBytes.invert
 
-  [
-    :destination_mac,
-    :payload,
-    :source_mac,
-    :type,
-  ].each do |name|
-    define_method(name) { params[name] }
-  end
-
   def initialize arg = {}
     case arg
-
     when Hash
-      params.merge! arg
-      @fu_packet           = PacketFu::EthPacket.new
-      @fu_packet.payload   = type == 'Eth' ? payload : IIPBytes[type] + payload
-      @fu_packet.eth_daddr = destination_mac
-      @fu_packet.eth_saddr = source_mac
-
+      arg[:destination_mac] ||= '00:00:00:00:00:00'
+      arg[:payload]         ||= ''
+      arg[:source_mac]      ||= '00:00:00:00:00:00'
+      arg[:type]            ||= 'Eth'
+      @bin =
+        arg[:destination_mac].split(':').pack('H2H2H2H2H2H2') +
+        arg[:source_mac].split(':').pack('H2H2H2H2H2H2') +
+        "\x08\x00" +
+        IIPBytes[arg[:type]] +
+        arg[:payload]
     when String
-      @fu_packet = PacketFu::Packet.parse arg
-      params.merge!({
-        payload:         @fu_packet.payload,
-        destination_mac: @fu_packet.eth_daddr,
-        source_mac:      @fu_packet.eth_saddr,
-      })
-      params.merge!({
-        payload: @fu_packet.payload[1..-1],
-        type:    IIPTypes[@fu_packet.payload[0]],
-      }) if IIPTypes[@fu_packet.payload[0]]
+      @bin = arg
     end
   end
 
   def == other
-    params == other.params
+    to_bin == other.to_bin
+  end
+
+  def destination_mac
+    @bin[0..5].unpack('H2H2H2H2H2H2').join ':'
   end
 
   alias eql? ==
 
   def hash
-    params.hash
+    @bin.hash
+  end
+
+  def payload
+    type == 'Eth' ? @bin[14..-1] : @bin[15..-1]
+  end
+
+  def source_mac
+    @bin[6..11].unpack('H2H2H2H2H2H2').join ':'
   end
 
   def to_bin
-    @fu_packet.to_s
+    @bin
   end
 
   def to_s
     "#{type.ljust 4} #{to_bin.split(//).map { |c| c.ord.to_s(16).rjust 2, '0' }.join ' '}"
   end
 
-  protected
-
-  def params
-    @params ||= {
-      destination_mac:  '00:00:00:00:00:00',
-      payload:          '',
-      source_mac:       '00:00:00:00:00:00',
-      type:             'Eth',
-    }
+  def type
+    IIPTypes[@bin[14]] or 'Eth'
   end
 
 end end
