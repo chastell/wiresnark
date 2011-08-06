@@ -26,11 +26,17 @@ module Wiresnark describe Packet do
         payload:         'foo',
       ).to_bin.should == "\xAA\xBB\xCC\xDD\xEE\xFF\x11\x22\x33\x44\x55\x66\x08\x00foo"
       Packet.new(
-        type:            'IIP 1',
         source_mac:      '11:22:33:44:55:66',
         destination_mac: 'aa:bb:cc:dd:ee:ff',
-        payload:         'foo',
-      ).to_bin.should == "\xAA\xBB\xCC\xDD\xEE\xFF\x11\x22\x33\x44\x55\x66\x08\x00\x01foo"
+        payload:         'bar',
+        type:            'IIP 1',
+      ).to_bin.should == "\xAA\xBB\xCC\xDD\xEE\xFF\x11\x22\x33\x44\x55\x66\x08\x00\x01bar"
+      Packet.new(
+        source_mac:      '11:22:33:44:55:66',
+        destination_mac: 'aa:bb:cc:dd:ee:ff',
+        payload:         'baz',
+        type:            'IIP 2',
+      ).to_bin.should == "\xAA\xBB\xCC\xDD\xEE\xFF\x11\x22\x33\x44\x55\x66\x08\x00\x02baz"
     end
 
   end
@@ -71,7 +77,8 @@ module Wiresnark describe Packet do
         source_mac:      '11:22:33:44:55:66',
         destination_mac: 'aa:bb:cc:dd:ee:ff',
         payload:         'foo',
-      ).to_bin.should == "\xAA\xBB\xCC\xDD\xEE\xFF\x11\x22\x33\x44\x55\x66\x08\x00foo"
+        type:            'IIP 2',
+      ).to_bin.should == "\xAA\xBB\xCC\xDD\xEE\xFF\x11\x22\x33\x44\x55\x66\x08\x00\x02foo"
     end
 
   end

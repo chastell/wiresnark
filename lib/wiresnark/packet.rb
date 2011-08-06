@@ -15,7 +15,7 @@ module Wiresnark class Packet
     when Hash
       params.merge! arg
       @fu_packet           = PacketFu::EthPacket.new
-      @fu_packet.payload   = type == 'IIP 1' ? "\x01" + payload : payload
+      @fu_packet.payload   = type.start_with?('IIP ') ? type[4].to_i.chr + payload : payload
       @fu_packet.eth_daddr = destination_mac
       @fu_packet.eth_saddr = source_mac
 
