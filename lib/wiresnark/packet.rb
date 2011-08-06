@@ -62,7 +62,7 @@ module Wiresnark class Packet
   end
 
   def to_s
-    "#{type.ljust 4} #{to_bin.split(//).map { |c| c.ord.to_s(16).rjust 2, '0' }.join ' '}"
+    "#{type}  #{@bin.unpack('H2' * @bin.size).join ' '}"
   end
 
   def type
