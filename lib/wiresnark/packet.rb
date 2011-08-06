@@ -22,11 +22,14 @@ module Wiresnark class Packet
     when String
       @fu_packet = PacketFu::Packet.parse arg
       params.merge!({
-        type:            'Eth',
         payload:         @fu_packet.payload,
         destination_mac: @fu_packet.eth_daddr,
         source_mac:      @fu_packet.eth_saddr,
       })
+      params.merge!({
+        payload: @fu_packet.payload[1..-1],
+        type:    "IIP #{@fu_packet.payload[0].ord}",
+      }) if ("\x01".."\x04").include? @fu_packet.payload[0]
     end
   end
 

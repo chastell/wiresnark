@@ -17,6 +17,20 @@ module Wiresnark describe Packet do
         destination_mac: 'aa:bb:cc:dd:ee:ff',
         payload:         'foo',
       )
+
+      Packet.new("\xAA\xBB\xCC\xDD\xEE\xFF\x11\x22\x33\x44\x55\x66\x08\x00\x01bar").should == Packet.new(
+        source_mac:      '11:22:33:44:55:66',
+        destination_mac: 'aa:bb:cc:dd:ee:ff',
+        payload:         'bar',
+        type:            'IIP 1',
+      )
+
+      Packet.new("\xAA\xBB\xCC\xDD\xEE\xFF\x11\x22\x33\x44\x55\x66\x08\x00\x02baz").should == Packet.new(
+        source_mac:      '11:22:33:44:55:66',
+        destination_mac: 'aa:bb:cc:dd:ee:ff',
+        payload:         'baz',
+        type:            'IIP 2',
+      )
     end
 
     it 'properly creates IIP Packets' do
