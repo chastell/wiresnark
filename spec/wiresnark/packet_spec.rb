@@ -11,46 +11,18 @@ module Wiresnark describe Packet do
 
     it 'creates Packet by parsing the passed binary' do
       Packet.new("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00").should == Packet.new
-
       Packet.new("\xAA\xBB\xCC\xDD\xEE\xFF\x11\x22\x33\x44\x55\x66\x08\x00foo").should == Packet.new(
         source_mac:      '11:22:33:44:55:66',
         destination_mac: 'aa:bb:cc:dd:ee:ff',
         payload:         'foo',
       )
-
-      Packet.new("\xAA\xBB\xCC\xDD\xEE\xFF\x11\x22\x33\x44\x55\x66\x08\x00\x01bar").should == Packet.new(
-        source_mac:      '11:22:33:44:55:66',
-        destination_mac: 'aa:bb:cc:dd:ee:ff',
-        payload:         'bar',
-        type:            'QoS',
-      )
-
-      Packet.new("\xAA\xBB\xCC\xDD\xEE\xFF\x11\x22\x33\x44\x55\x66\x08\x00\x02baz").should == Packet.new(
-        source_mac:      '11:22:33:44:55:66',
-        destination_mac: 'aa:bb:cc:dd:ee:ff',
-        payload:         'baz',
-        type:            'CAN',
-      )
+      Packet.new("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00\x01bar").should == Packet.new(payload: 'bar', type: 'QoS')
+      Packet.new("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00\x02baz").should == Packet.new(payload: 'baz', type: 'CAN')
     end
 
     it 'properly creates IIP Packets' do
-      Packet.new(
-        source_mac:      '11:22:33:44:55:66',
-        destination_mac: 'aa:bb:cc:dd:ee:ff',
-        payload:         'foo',
-      ).to_bin.should == "\xAA\xBB\xCC\xDD\xEE\xFF\x11\x22\x33\x44\x55\x66\x08\x00foo"
-      Packet.new(
-        source_mac:      '11:22:33:44:55:66',
-        destination_mac: 'aa:bb:cc:dd:ee:ff',
-        payload:         'bar',
-        type:            'QoS',
-      ).to_bin.should == "\xAA\xBB\xCC\xDD\xEE\xFF\x11\x22\x33\x44\x55\x66\x08\x00\x01bar"
-      Packet.new(
-        source_mac:      '11:22:33:44:55:66',
-        destination_mac: 'aa:bb:cc:dd:ee:ff',
-        payload:         'baz',
-        type:            'CAN',
-      ).to_bin.should == "\xAA\xBB\xCC\xDD\xEE\xFF\x11\x22\x33\x44\x55\x66\x08\x00\x02baz"
+      Packet.new(payload: 'bar', type: 'QoS').to_bin.should == "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00\x01bar"
+      Packet.new(payload: 'baz', type: 'CAN').to_bin.should == "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00\x02baz"
     end
 
   end
