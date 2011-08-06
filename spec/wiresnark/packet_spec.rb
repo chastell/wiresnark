@@ -26,7 +26,7 @@ module Wiresnark describe Packet do
         payload:         'foo',
       ).to_bin.should == "\xAA\xBB\xCC\xDD\xEE\xFF\x11\x22\x33\x44\x55\x66\x08\x00foo"
       Packet.new(
-        type:            'IIP',
+        type:            'IIP 1',
         source_mac:      '11:22:33:44:55:66',
         destination_mac: 'aa:bb:cc:dd:ee:ff',
         payload:         'foo',
@@ -39,7 +39,7 @@ module Wiresnark describe Packet do
 
     it 'tests equality' do
       Packet.new.should                  == Packet.new(type: 'Eth', payload: '')
-      Packet.new(type: 'Eth').should_not == Packet.new(type: 'IIP')
+      Packet.new(type: 'Eth').should_not == Packet.new(type: 'IIP 1')
       Packet.new(type: 'Eth').should_not == Packet.new(type: 'Eth', payload: 'foo')
     end
 
@@ -49,7 +49,7 @@ module Wiresnark describe Packet do
 
     it 'matches #== for equality' do
       Packet.new.should                  be_eql Packet.new(type: 'Eth', payload: '')
-      Packet.new(type: 'Eth').should_not be_eql Packet.new(type: 'IIP')
+      Packet.new(type: 'Eth').should_not be_eql Packet.new(type: 'IIP 1')
       Packet.new(type: 'Eth').should_not be_eql Packet.new(type: 'Eth', payload: 'foo')
     end
 
@@ -92,8 +92,8 @@ module Wiresnark describe Packet do
   describe '#{params}' do
 
     it 'returns the various param values' do
-      Packet.new.type.should              == 'Eth'
-      Packet.new(type: 'IIP').type.should == 'IIP'
+      Packet.new.type.should                == 'Eth'
+      Packet.new(type: 'IIP 1').type.should == 'IIP 1'
       Packet.new.payload.should                 == ''
       Packet.new(payload: 'foo').payload.should == 'foo'
     end

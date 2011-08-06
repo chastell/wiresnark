@@ -5,8 +5,8 @@ module Wiresnark describe Wiresnark do
   describe '.run' do
 
     it 'setups Interfaces to listen and generate as per passed block' do
-      spec_a  = Proc.new { count 2; type 'Eth' }
-      spec_b  = Proc.new { count 3; type 'IIP' }
+      spec_a  = Proc.new { count 2; type 'Eth'   }
+      spec_b  = Proc.new { count 3; type 'IIP 1' }
 
       Interface.new('lo').should_receive(:start_capture).ordered
       Interface.new('lo').should_receive(:inject).with(Generator.generate(&spec_b), $stdout).ordered
