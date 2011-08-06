@@ -25,12 +25,14 @@ module Wiresnark class Interface
   end
 
   def start_capture
-    @capture = PacketFu::Capture.new iface: @name, start: true
+    @stream = Pcap.open_live @name, 0xffff, false, 1
   end
 
   def verify_capture expected, output = StringIO.new
-    @capture.save
-    captured = @capture.array.map { |bin| Packet.new bin }
+    captured = []
+    while bin = @stream.next
+      captured << Packet.new(bin)
+    end
 
     missing = expected - captured
     extra   = captured - expected

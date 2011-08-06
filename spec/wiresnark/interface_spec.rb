@@ -52,7 +52,7 @@ monitoring lo:
   describe '#start_capture' do
 
     it 'starts packet capture by the given interface' do
-      PacketFu::Capture.should_receive(:new).with iface: 'lo', start: true
+      Pcap.should_receive(:open_live).with 'lo', 0xffff, false, 1
       Interface.new('lo').start_capture
     end
 
@@ -61,13 +61,12 @@ monitoring lo:
   describe '#verify_capture' do
 
     before do
-      PacketFu::Capture.should_receive(:new).with(iface: 'lo', start: true).and_return @capturer = mock
-      @capturer.should_receive :save
+      Pcap.should_receive(:open_live).with('lo', 0xffff, false, 1).and_return @stream = mock
       Interface.new('lo').start_capture
     end
 
     it 'returns true/none-missing/none-extra if captured packets equal passed ones' do
-      @capturer.should_receive(:array).and_return ["\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00foo", "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00bar"]
+      @stream.should_receive(:next).and_return "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00foo", "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00bar", nil
       Interface.new('lo').verify_capture([Packet.new(payload: 'foo'), Packet.new(payload: 'bar')]).should == {
         result:  true,
         missing: [],
@@ -76,7 +75,7 @@ monitoring lo:
     end
 
     it 'returns false/missing/extra if captured packets differ from the passed ones' do
-      @capturer.should_receive(:array).and_return ["\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00foo", "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00baz"]
+      @stream.should_receive(:next).and_return "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00foo", "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00baz", nil
       Interface.new('lo').verify_capture([Packet.new(payload: 'foo'), Packet.new(payload: 'bar')]).should == {
         result:  false,
         missing: [Packet.new(payload: 'bar')],
@@ -85,7 +84,7 @@ monitoring lo:
     end
 
     it 'puts the information about captured/missing/extra Packets to the passed IO' do
-      @capturer.should_receive(:array).and_return ["\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00foo", "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00baz"]
+      @stream.should_receive(:next).and_return "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00foo", "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00baz", nil
       Interface.new('lo').verify_capture [Packet.new(payload: 'foo'), Packet.new(payload: 'bar')], output = StringIO.new
       output.rewind
       output.read.should == <<-END
