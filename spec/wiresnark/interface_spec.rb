@@ -3,6 +3,7 @@ module Wiresnark describe Interface do
   describe '.new' do
 
     it 'returns the same object for subsequent calls to the same interface' do
+      Pcap.should_receive(:open_live).twice
       Interface.new('the same interface').should     equal Interface.new 'the same interface'
       Interface.new('the same interface').should_not equal Interface.new 'some other interface'
     end
@@ -62,7 +63,6 @@ monitoring lo:
 
     before do
       Pcap.should_receive(:open_live).with('lo', 0xffff, false, 1).and_return @stream = mock
-      Interface.new('lo').start_capture
     end
 
     it 'returns true/none-missing/none-extra if captured packets equal passed ones' do

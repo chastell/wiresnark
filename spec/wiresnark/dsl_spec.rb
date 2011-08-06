@@ -7,6 +7,8 @@ module Wiresnark describe DSL do
   describe '#expect_packets_at' do
 
     it 'stores the interface + expectation info in the extended Object' do
+      Pcap.should_receive :open_live
+
       spec_a  = Proc.new { count 2; type 'Eth' }
       spec_b  = Proc.new { count 3; type 'QoS' }
 
@@ -24,6 +26,8 @@ module Wiresnark describe DSL do
   describe '#send_packets_to' do
 
     it 'stores the interface + generation info in the extended Object' do
+      Pcap.should_receive :open_live
+
       spec_a  = Proc.new { count 2; type 'Eth' }
       spec_b  = Proc.new { count 3; type 'QoS' }
 

@@ -6,26 +6,24 @@ module Wiresnark class Interface
   end
 
   def initialize name
-    @name = name
+    @name   = name
+    @stream = Pcap.open_live name, 0xffff, false, 1
   end
 
   def inject packets, output = StringIO.new
-    stream = Pcap.open_live @name, 0xffff, false, 1
-
     output.puts "injecting into #{@name}:"
     packets.each do |packet|
-      stream.inject packet.to_bin
+      @stream.inject packet.to_bin
       output.puts "\t#{packet}"
     end
   end
 
   def monitor output
     output.puts "monitoring #{@name}:"
-    Pcap.open_live(@name, 0xffff, false, 1).each { |packet| output.puts "\t#{Packet.new packet}" }
+    @stream.each { |packet| output.puts "\t#{Packet.new packet}" }
   end
 
   def start_capture
-    @stream = Pcap.open_live @name, 0xffff, false, 1
   end
 
   def verify_capture expected, output = StringIO.new

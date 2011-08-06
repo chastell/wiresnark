@@ -35,6 +35,7 @@ monitoring lo:
   describe '#run' do
 
     it 'executes the passed files' do
+      Pcap.should_receive :open_live
       Wiresnark.should_receive :capture_inject_verify
       Executable.new(['spec/fixtures/ten-iip-to-lo.rb']).run
     end
