@@ -10,9 +10,13 @@ module Wiresnark class Interface
   end
 
   def inject packets, output = StringIO.new
-    PacketFu::Inject.new(iface: @name).inject array: packets.map(&:to_bin)
-    output.puts "injected into #{@name}:"
-    packets.each { |packet| output.puts "\t#{packet}" }
+    stream = Pcap.open_live @name, 0xffff, false, 1
+
+    output.puts "injecting into #{@name}:"
+    packets.each do |packet|
+      stream.inject packet.to_bin
+      output.puts "\t#{packet}"
+    end
   end
 
   def monitor output

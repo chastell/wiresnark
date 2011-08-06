@@ -12,20 +12,21 @@ module Wiresnark describe Interface do
   describe '#inject' do
 
     before do
-      PacketFu::Inject.should_receive(:new).with(iface: 'lo').and_return @injector = mock
+      Pcap.should_receive(:open_live).with('lo', 0xffff, false, 1).and_return @stream = mock
     end
 
     it 'injects the passed Packets into the Interface' do
-      @injector.should_receive(:inject).with array: ["\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00foo", "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00bar"]
+      @stream.should_receive(:inject).with "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00foo"
+      @stream.should_receive(:inject).with "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00bar"
       Interface.new('lo').inject [Packet.new(payload: 'foo'), Packet.new(payload: 'bar')]
     end
 
     it 'puts the information about injected Packets to the passed IO' do
-      @injector.should_receive :inject
+      @stream.should_receive(:inject).twice
       Interface.new('lo').inject [Packet.new(payload: 'foo'), Packet.new(payload: 'bar')], output = StringIO.new
       output.rewind
       output.read.should == <<-END
-injected into lo:
+injecting into lo:
 \tEth  00 00 00 00 00 00 00 00 00 00 00 00 08 00 66 6f 6f
 \tEth  00 00 00 00 00 00 00 00 00 00 00 00 08 00 62 61 72
       END
