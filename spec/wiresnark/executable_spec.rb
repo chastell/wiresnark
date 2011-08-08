@@ -25,8 +25,8 @@ module Wiresnark describe Executable do
       output.rewind
       output.read.should == <<-END
 monitoring lo:
-\tEth  00 00 00 00 00 00 00 00 00 00 00 00 08 00 62 61 72
-\tEth  00 00 00 00 00 00 00 00 00 00 00 00 08 00 66 6f 6f
+\tEth  00:00:00:00:00:00 00:00:00:00:00:00 08 00 62 61 72
+\tEth  00:00:00:00:00:00 00:00:00:00:00:00 08 00 66 6f 6f
       END
     end
 

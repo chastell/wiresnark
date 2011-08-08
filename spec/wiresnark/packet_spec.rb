@@ -134,13 +134,13 @@ module Wiresnark describe Packet do
   describe '#to_s' do
 
     it 'returns a human-readable Packet representation' do
-      Packet.new.to_s.should == 'Eth  00 00 00 00 00 00 00 00 00 00 00 00 08 00'
+      Packet.new.to_s.should == 'Eth  00:00:00:00:00:00 00:00:00:00:00:00 08 00'
       Packet.new(
         source_mac:      '11:22:33:44:55:66',
         destination_mac: 'aa:bb:cc:dd:ee:ff',
         payload:         'foo',
         type:            'DSS',
-      ).to_s.should == 'DSS  aa bb cc dd ee ff 11 22 33 44 55 66 08 00 03 66 6f 6f'
+      ).to_s.should == 'DSS  aa:bb:cc:dd:ee:ff 11:22:33:44:55:66 08 00 03 66 6f 6f'
     end
 
   end

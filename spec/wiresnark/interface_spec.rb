@@ -28,8 +28,8 @@ module Wiresnark describe Interface do
       output.rewind
       output.read.should == <<-END
 injecting into lo:
-\tEth  00 00 00 00 00 00 00 00 00 00 00 00 08 00 66 6f 6f
-\tEth  00 00 00 00 00 00 00 00 00 00 00 00 08 00 62 61 72
+\tEth  00:00:00:00:00:00 00:00:00:00:00:00 08 00 66 6f 6f
+\tEth  00:00:00:00:00:00 00:00:00:00:00:00 08 00 62 61 72
       END
     end
 
@@ -43,8 +43,8 @@ injecting into lo:
       output.rewind
       output.read.should == <<-END
 monitoring lo:
-\tEth  00 00 00 00 00 00 00 00 00 00 00 00 08 00 62 61 72
-\tEth  00 00 00 00 00 00 00 00 00 00 00 00 08 00 66 6f 6f
+\tEth  00:00:00:00:00:00 00:00:00:00:00:00 08 00 62 61 72
+\tEth  00:00:00:00:00:00 00:00:00:00:00:00 08 00 66 6f 6f
       END
     end
 
@@ -78,12 +78,12 @@ monitoring lo:
       output.rewind
       output.read.should == <<-END
 captured from lo:
-\tEth  00 00 00 00 00 00 00 00 00 00 00 00 08 00 66 6f 6f
-\tEth  00 00 00 00 00 00 00 00 00 00 00 00 08 00 62 61 72
+\tEth  00:00:00:00:00:00 00:00:00:00:00:00 08 00 66 6f 6f
+\tEth  00:00:00:00:00:00 00:00:00:00:00:00 08 00 62 61 72
 missing from lo:
-\tEth  00 00 00 00 00 00 00 00 00 00 00 00 08 00 62 61 7a
+\tEth  00:00:00:00:00:00 00:00:00:00:00:00 08 00 62 61 7a
 extra at lo:
-\tEth  00 00 00 00 00 00 00 00 00 00 00 00 08 00 62 61 72
+\tEth  00:00:00:00:00:00 00:00:00:00:00:00 08 00 62 61 72
       END
     end
 

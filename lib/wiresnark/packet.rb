@@ -60,7 +60,7 @@ module Wiresnark class Packet
   end
 
   def to_s
-    "#{type}  #{@bin.unpack('H2' * @bin.size).join ' '}"
+    "#{type}  #{destination_mac} #{source_mac} #{@bin[12..-1].unpack('H2' * (@bin.size - 12)).join ' '}"
   end
 
   def type
