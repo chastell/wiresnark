@@ -1,4 +1,4 @@
-require 'packetfu'
+require 'pcaprub'
 require 'stringio'
 require 'trollop'
 
