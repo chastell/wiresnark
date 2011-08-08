@@ -26,7 +26,7 @@ module Wiresnark
   private
 
   def self.capture_inject_verify
-    output = @env.verbose? ? $stdout : StringIO.new
+    output = @env.verbose? ? $stdout : nil
 
     @env.generations.each do |gen|
       gen[:interface].inject Generator.generate(&gen[:packet_spec]), output
