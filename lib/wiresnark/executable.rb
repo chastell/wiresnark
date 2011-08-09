@@ -15,7 +15,7 @@ module Wiresnark class Executable
     if @monitor
       Interface.new(@monitor).monitor output
     else
-      @files.each { |file| Wiresnark.run_file file }
+      @files.each { |file| Wiresnark.run file }
     end
   end
 

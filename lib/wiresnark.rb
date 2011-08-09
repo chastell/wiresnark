@@ -11,15 +11,10 @@ require_relative 'wiresnark/packet/dsl'
 
 module Wiresnark
 
-  def self.run &block
+  def self.run file = nil, &block
     @env = Object.new.extend DSL
-    @env.instance_eval &block
-    capture_inject_verify
-  end
-
-  def self.run_file file
-    @env = Object.new.extend DSL
-    @env.instance_eval File.read file
+    @env.instance_eval File.read file if file
+    @env.instance_eval &block         if block_given?
     capture_inject_verify
   end
 
