@@ -1,7 +1,7 @@
-module Wiresnark describe DSL do
+module Wiresnark describe DSL::Wiresnark do
 
   before do
-    @env = Object.new.extend DSL
+    @env = Object.new.extend DSL::Wiresnark
   end
 
   describe '#expect_packets_at' do
@@ -45,7 +45,7 @@ module Wiresnark describe DSL do
   describe '#verbose, #verbose?' do
 
     it 'sets verbose flag to true (default: false) and allows reading it' do
-      env = Object.new.extend DSL
+      env = Object.new.extend DSL::Wiresnark
       env.should_not be_verbose
       env.verbose
       env.should be_verbose

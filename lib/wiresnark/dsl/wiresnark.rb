@@ -1,4 +1,4 @@
-module Wiresnark module DSL
+module Wiresnark module DSL module Wiresnark
 
   def expect_packets_at name, &packet_spec
     expectations << { interface: Interface.new(name), packet_spec: packet_spec }
@@ -24,4 +24,4 @@ module Wiresnark module DSL
     @verbose
   end
 
-end end
+end end end

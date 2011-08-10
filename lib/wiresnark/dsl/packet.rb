@@ -1,4 +1,4 @@
-module Wiresnark module Packet::DSL
+module Wiresnark module DSL module Packet
 
   [
     :destination_mac,
@@ -17,4 +17,4 @@ module Wiresnark module Packet::DSL
     @params ||= {}
   end
 
-end end
+end end end

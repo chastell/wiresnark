@@ -1,7 +1,7 @@
-module Wiresnark describe Packet::DSL do
+module Wiresnark describe DSL::Packet do
 
   before do
-    @env = Object.new.extend Packet::DSL
+    @env = Object.new.extend DSL::Packet
   end
 
   describe '#count' do
