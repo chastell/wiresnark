@@ -26,7 +26,7 @@ module Wiresnark describe Wiresnark do
       Interface.new('lo').should_receive(:inject).ordered
       Interface.new('lo').should_receive(:verify_capture).ordered
 
-      Wiresnark.run 'spec/fixtures/ten-iip-to-lo.rb'
+      Wiresnark.run 'spec/fixtures/ten-qos-to-lo.rb'
     end
 
   end
