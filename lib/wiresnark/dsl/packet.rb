@@ -17,6 +17,10 @@ module Wiresnark module DSL module Packet
     @params ||= {}
   end
 
+  def phase_types *phase_types
+    phase_types.empty? ? @phase_types ||= ['Eth'] : @phase_types = phase_types
+  end
+
   def phase_usec phase_usec = nil
     phase_usec.nil? ? @phase_usec ||= 1000 : @phase_usec = phase_usec
   end

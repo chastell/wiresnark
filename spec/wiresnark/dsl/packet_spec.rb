@@ -23,6 +23,16 @@ module Wiresnark describe DSL::Packet do
 
   end
 
+  describe '#phase_types' do
+
+    it 'allows setting and reading phase types, defaulting to just Eth packets' do
+      @env.phase_types.should == ['Eth']
+      @env.phase_types 'QoS', 'CAN', 'DSS', 'MGT'
+      @env.phase_types.should == ['QoS', 'CAN', 'DSS', 'MGT']
+    end
+
+  end
+
   describe '#phase_usec' do
 
     it 'allows setting and reading phase lenght in microseconds, defaulting to 1000' do
