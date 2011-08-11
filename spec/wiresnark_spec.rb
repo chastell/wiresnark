@@ -11,7 +11,7 @@ module Wiresnark describe Wiresnark do
       spec_b  = Proc.new { count 3; type 'QoS' }
 
       Interface.new('lo').should_receive(:inject).with(Generator.generate(&spec_b), $stdout).ordered
-      Interface.new('lo').should_receive(:verify_capture).with(Generator.generate(&spec_a), $stdout).ordered
+      Interface.new('lo').should_receive(:verify).with(Generator.generate(&spec_a), $stdout).ordered
 
       Wiresnark.run do
         verbose
@@ -24,7 +24,7 @@ module Wiresnark describe Wiresnark do
       Pcap.should_receive :open_live
 
       Interface.new('lo').should_receive(:inject).ordered
-      Interface.new('lo').should_receive(:verify_capture).ordered
+      Interface.new('lo').should_receive(:verify).ordered
 
       Wiresnark.run 'spec/fixtures/ten-qos-to-lo.rb'
     end

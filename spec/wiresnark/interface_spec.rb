@@ -50,7 +50,7 @@ monitoring lo:
 
   end
 
-  describe '#verify_capture' do
+  describe '#verify' do
 
     before do
       Pcap.should_receive(:open_live).with('lo', 0xffff, false, 1).and_return stream = mock
@@ -58,7 +58,7 @@ monitoring lo:
     end
 
     it 'returns true/none-missing/none-extra if captured packets equal passed ones' do
-      Interface.new('lo').verify_capture([Packet.new(payload: 'foo'), Packet.new(payload: 'bar')]).should == {
+      Interface.new('lo').verify([Packet.new(payload: 'foo'), Packet.new(payload: 'bar')]).should == {
         result:  true,
         missing: [],
         extra:   [],
@@ -66,7 +66,7 @@ monitoring lo:
     end
 
     it 'returns false/missing/extra if captured packets differ from the passed ones' do
-      Interface.new('lo').verify_capture([Packet.new(payload: 'foo'), Packet.new(payload: 'baz')]).should == {
+      Interface.new('lo').verify([Packet.new(payload: 'foo'), Packet.new(payload: 'baz')]).should == {
         result:  false,
         missing: [Packet.new(payload: 'baz')],
         extra:   [Packet.new(payload: 'bar')],
@@ -74,7 +74,7 @@ monitoring lo:
     end
 
     it 'puts the information about captured/missing/extra Packets to the passed IO' do
-      Interface.new('lo').verify_capture [Packet.new(payload: 'foo'), Packet.new(payload: 'baz')], output = StringIO.new
+      Interface.new('lo').verify [Packet.new(payload: 'foo'), Packet.new(payload: 'baz')], output = StringIO.new
       output.rewind
       output.read.should == <<-END
 captured from lo:

@@ -28,7 +28,7 @@ module Wiresnark
     end
 
     @env.expect_packets_at_blocks.each do |exp|
-      exp[:interface].verify_capture Generator.generate(&exp[:packet_spec]), output
+      exp[:interface].verify Generator.generate(&exp[:packet_spec]), output
     end
   end
 
