@@ -21,4 +21,25 @@ module Wiresnark module Generator
 
   end
 
+  describe '.generate_for_cycle' do
+
+    it 'returns a type-keyed Hash of Packets suitable to use in the described cycle' do
+      Generator.generate_for_cycle do
+        phase_usec  3
+        phase_types 'Eth'
+      end.should == {
+        'Eth' => [Packet.new, Packet.new, Packet.new],
+      }
+
+      Generator.generate_for_cycle do
+        phase_usec  2
+        phase_types 'QoS', 'DSS'
+      end.should == {
+        'QoS' => [Packet.new(type: 'QoS'), Packet.new(type: 'QoS')],
+        'DSS' => [Packet.new(type: 'DSS'), Packet.new(type: 'DSS')],
+      }
+    end
+
+  end
+
 end end
