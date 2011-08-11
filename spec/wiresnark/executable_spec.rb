@@ -36,7 +36,7 @@ monitoring lo:
 
     it 'executes the passed files' do
       Pcap.should_receive :open_live
-      Wiresnark.should_receive :capture_inject_verify
+      Wiresnark.should_receive :inject_and_verify
       Executable.new(['spec/fixtures/ten-qos-to-lo.rb']).run
     end
 

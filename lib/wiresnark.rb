@@ -15,12 +15,12 @@ module Wiresnark
     @env = Object.new.extend DSL::Wiresnark
     @env.instance_eval File.read file if file
     @env.instance_eval &block         if block_given?
-    capture_inject_verify
+    inject_and_verify
   end
 
   private
 
-  def self.capture_inject_verify
+  def self.inject_and_verify
     output = @env.verbose? ? $stdout : nil
 
     @env.send_packets_to_blocks.each do |send|
