@@ -17,4 +17,8 @@ module Wiresnark module DSL module Packet
     @params ||= {}
   end
 
+  def phase_usec phase_usec = nil
+    phase_usec.nil? ? @phase_usec ||= 1000 : @phase_usec = phase_usec
+  end
+
 end end end

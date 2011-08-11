@@ -23,6 +23,16 @@ module Wiresnark describe DSL::Packet do
 
   end
 
+  describe '#phase_usec' do
+
+    it 'allows setting and reading phase lenght in microseconds, defaulting to 1000' do
+      @env.phase_usec.should == 1000
+      @env.phase_usec 200
+      @env.phase_usec.should == 200
+    end
+
+  end
+
   describe '#{params}' do
 
     it 'allows setting the relevant params' do
