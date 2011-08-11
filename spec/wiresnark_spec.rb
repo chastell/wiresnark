@@ -4,7 +4,7 @@ module Wiresnark describe Wiresnark do
 
   describe '.run' do
 
-    it 'setups Interfaces to listen and generate as per passed block' do
+    it 'setups Interfaces to inject and verify as per passed block' do
       Pcap.should_receive :open_live
 
       spec_a  = Proc.new { count 2; type 'Eth' }
@@ -20,7 +20,7 @@ module Wiresnark describe Wiresnark do
       end
     end
 
-    it 'executes the code found in the passed file' do
+    it 'setups Interfaces to inject and verify as per passed file' do
       Pcap.should_receive :open_live
 
       Interface.new('lo').should_receive(:inject).ordered
