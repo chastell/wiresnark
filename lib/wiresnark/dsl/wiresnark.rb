@@ -8,6 +8,14 @@ module Wiresnark module DSL module Wiresnark
     @expect_packets_at_blocks ||= []
   end
 
+  def send_cycle_to name, &packet_spec
+    send_cycle_to_blocks << { interface: Interface.new(name), packet_spec: packet_spec }
+  end
+
+  def send_cycle_to_blocks
+    @send_cycle_to_blocks ||= []
+  end
+
   def send_packets_to name, &packet_spec
     send_packets_to_blocks << { interface: Interface.new(name), packet_spec: packet_spec }
   end

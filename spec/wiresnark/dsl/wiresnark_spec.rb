@@ -23,6 +23,25 @@ module Wiresnark describe DSL::Wiresnark do
 
   end
 
+  describe '#send_cycle_to, #send_cycle_to_blocks' do
+
+    it 'stores the interface + generation info in the extended Object' do
+      Pcap.should_receive :open_live
+
+      spec_a  = Proc.new { phase_usec 200; types 'QoS', 'CAN', 'DSS', 'MGT' }
+      spec_b  = Proc.new { phase_usec 100; types 'Eth' }
+
+      @env.send_cycle_to 'lo', &spec_a
+      @env.send_cycle_to 'lo', &spec_b
+
+      @env.send_cycle_to_blocks.should == [
+        { interface: Interface.new('lo'), packet_spec: spec_a },
+        { interface: Interface.new('lo'), packet_spec: spec_b },
+      ]
+    end
+
+  end
+
   describe '#send_packets_to, #send_packets_to_blocks' do
 
     it 'stores the interface + generation info in the extended Object' do
