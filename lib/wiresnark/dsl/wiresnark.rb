@@ -1,19 +1,19 @@
 module Wiresnark module DSL module Wiresnark
 
   def expect_packets_at name, &packet_spec
-    expectations << { interface: Interface.new(name), packet_spec: packet_spec }
+    expect_packets_at_blocks << { interface: Interface.new(name), packet_spec: packet_spec }
   end
 
-  def expectations
-    @expectations ||= []
-  end
-
-  def generations
-    @generations ||= []
+  def expect_packets_at_blocks
+    @expect_packets_at_blocks ||= []
   end
 
   def send_packets_to name, &packet_spec
-    generations << { interface: Interface.new(name), packet_spec: packet_spec }
+    send_packets_to_blocks << { interface: Interface.new(name), packet_spec: packet_spec }
+  end
+
+  def send_packets_to_blocks
+    @send_packets_to_blocks ||= []
   end
 
   def verbose

@@ -4,7 +4,7 @@ module Wiresnark describe DSL::Wiresnark do
     @env = Object.new.extend DSL::Wiresnark
   end
 
-  describe '#expect_packets_at' do
+  describe '#expect_packets_at, #expect_packets_at_blocks' do
 
     it 'stores the interface + expectation info in the extended Object' do
       Pcap.should_receive :open_live
@@ -15,7 +15,7 @@ module Wiresnark describe DSL::Wiresnark do
       @env.expect_packets_at 'lo', &spec_a
       @env.expect_packets_at 'lo', &spec_b
 
-      @env.expectations.should == [
+      @env.expect_packets_at_blocks.should == [
         { interface: Interface.new('lo'), packet_spec: spec_a },
         { interface: Interface.new('lo'), packet_spec: spec_b },
       ]
@@ -23,7 +23,7 @@ module Wiresnark describe DSL::Wiresnark do
 
   end
 
-  describe '#send_packets_to' do
+  describe '#send_packets_to, #send_packets_to_blocks' do
 
     it 'stores the interface + generation info in the extended Object' do
       Pcap.should_receive :open_live
@@ -34,7 +34,7 @@ module Wiresnark describe DSL::Wiresnark do
       @env.send_packets_to 'lo', &spec_a
       @env.send_packets_to 'lo', &spec_b
 
-      @env.generations.should == [
+      @env.send_packets_to_blocks.should == [
         { interface: Interface.new('lo'), packet_spec: spec_a },
         { interface: Interface.new('lo'), packet_spec: spec_b },
       ]

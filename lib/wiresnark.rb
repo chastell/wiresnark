@@ -23,11 +23,11 @@ module Wiresnark
   def self.capture_inject_verify
     output = @env.verbose? ? $stdout : nil
 
-    @env.generations.each do |gen|
-      gen[:interface].inject Generator.generate(&gen[:packet_spec]), output
+    @env.send_packets_to_blocks.each do |send|
+      send[:interface].inject Generator.generate(&send[:packet_spec]), output
     end
 
-    @env.expectations.each do |exp|
+    @env.expect_packets_at_blocks.each do |exp|
       exp[:interface].verify_capture Generator.generate(&exp[:packet_spec]), output
     end
   end
