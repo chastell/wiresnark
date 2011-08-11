@@ -7,8 +7,8 @@ module Wiresnark describe Wiresnark do
     it 'setups Interfaces to inject and verify as per passed block' do
       Pcap.should_receive :open_live
 
-      spec_a  = Proc.new { count 2; type 'Eth' }
-      spec_b  = Proc.new { count 3; type 'QoS' }
+      spec_a = Proc.new { count 2; type 'Eth' }
+      spec_b = Proc.new { count 3; type 'QoS' }
 
       Interface.new('lo').should_receive(:inject).with(Generator.generate(&spec_b), $stdout).ordered
       Interface.new('lo').should_receive(:verify).with(Generator.generate(&spec_a), $stdout).ordered

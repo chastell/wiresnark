@@ -9,8 +9,8 @@ module Wiresnark describe DSL::Wiresnark do
     it 'stores the interface + expectation info in the extended Object' do
       Pcap.should_receive :open_live
 
-      spec_a  = Proc.new { count 2; type 'Eth' }
-      spec_b  = Proc.new { count 3; type 'QoS' }
+      spec_a = Proc.new { count 2; type 'Eth' }
+      spec_b = Proc.new { count 3; type 'QoS' }
 
       @env.expect_packets_at 'lo', &spec_a
       @env.expect_packets_at 'lo', &spec_b
@@ -28,8 +28,8 @@ module Wiresnark describe DSL::Wiresnark do
     it 'stores the interface + generation info in the extended Object' do
       Pcap.should_receive :open_live
 
-      spec_a  = Proc.new { phase_usec 200; types 'QoS', 'CAN', 'DSS', 'MGT' }
-      spec_b  = Proc.new { phase_usec 100; types 'Eth' }
+      spec_a = Proc.new { phase_usec 200; types 'QoS', 'CAN', 'DSS', 'MGT' }
+      spec_b = Proc.new { phase_usec 100; types 'Eth' }
 
       @env.send_cycle_to 'lo', &spec_a
       @env.send_cycle_to 'lo', &spec_b
@@ -47,8 +47,8 @@ module Wiresnark describe DSL::Wiresnark do
     it 'stores the interface + generation info in the extended Object' do
       Pcap.should_receive :open_live
 
-      spec_a  = Proc.new { count 2; type 'Eth' }
-      spec_b  = Proc.new { count 3; type 'QoS' }
+      spec_a = Proc.new { count 2; type 'Eth' }
+      spec_b = Proc.new { count 3; type 'QoS' }
 
       @env.send_packets_to 'lo', &spec_a
       @env.send_packets_to 'lo', &spec_b
