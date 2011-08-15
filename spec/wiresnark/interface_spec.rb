@@ -35,6 +35,21 @@ injecting into lo:
 
   end
 
+  describe '#inject_cycle' do
+
+    it 'injects the passed Packets into the Interface maintaing the given cycle' do
+      Pcap.should_receive(:open_live).with('lo', 0xffff, false, 1).and_return stream = mock
+      stream.should_receive(:inject).with(Packet.new.to_bin).at_least(3).times
+      stream.should_receive(:inject).with(Packet.new.to_bin).at_least(3).times
+      Interface.new('lo').inject_cycle 100, ['Eth'], { 'Eth' => [Packet.new, Packet.new, Packet.new] }, 2
+      # Interface.new('lo').inject_cycle 2, ['QoS', 'DSS'], {
+      #   'QoS' => [Packet.new(type: 'QoS'), Packet.new(type: 'QoS')],
+      #   'DSS' => [Packet.new(type: 'DSS'), Packet.new(type: 'DSS')],
+      # }
+    end
+
+  end
+
   describe '#monitor' do
 
     it 'outputs captured Packets to the given output' do

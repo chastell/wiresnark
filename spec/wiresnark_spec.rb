@@ -29,6 +29,21 @@ module Wiresnark describe Wiresnark do
       Wiresnark.run 'spec/fixtures/ten-qos-to-lo.rb'
     end
 
+    # it 'setups Interfaces to cycle as per passed block' do
+    #   Pcap.should_receive :open_live
+
+    #   spec = Proc.new do
+    #     phase_usec  200
+    #     phase_types 'QoS', 'CAN', 'DSS', 'MGT'
+    #   end
+
+    #   Generator.should_receive(:generate_for_cycle).with(&spec).and_return packets = mock
+
+    #   Wiresnark.run do
+    #     send_cycle_to 'lo', &spec
+    #   end
+    # end
+
   end
 
 end end

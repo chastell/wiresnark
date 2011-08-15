@@ -18,6 +18,16 @@ module Wiresnark class Interface
     end
   end
 
+  def inject_cycle phase_usec, phase_types, packets, cycles
+    phase_types.cycle(cycles) do |phase_type|
+      stop = (Time.now.usec + phase_usec) % 1_000_000
+      packets[phase_type].cycle do |packet|
+        @stream.inject packet.to_bin
+        break if Time.now.usec > stop
+      end
+    end
+  end
+
   def monitor output
     output.puts "monitoring #{@name}:"
     @stream.each { |packet| output.puts "\t#{Packet.new packet}" }
