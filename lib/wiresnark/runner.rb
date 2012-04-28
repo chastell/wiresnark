@@ -49,7 +49,7 @@ module Wiresnark class Runner
         puts "#{mon.interface} ->\t#{packet}" if mon.verbose?
 
         if mon.running_tally?
-          print "\r" + counts.map { |type, values| "#{type}: #{values[:count].to_s.rjust 5} p, #{values[:bytes].to_s.rjust 5} b, #{(values[:bytes] / values[:count] rescue nil).to_s.rjust 5} b/p" }.join('    ')
+          print "\r" + counts.map { |t, vals| "#{t}: #{vals[:count].to_s.rjust 5} p, #{vals[:bytes].to_s.rjust 5} b, #{(vals[:bytes] / vals[:count] rescue nil).to_s.rjust 5} b/p" }.join('    ')
         end
       end
 
