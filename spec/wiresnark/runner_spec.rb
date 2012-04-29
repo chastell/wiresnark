@@ -18,7 +18,7 @@ module Wiresnark describe Runner do
     it 'outputs the traffic info if so instructed' do
       skip if Process.uid.zero?
 
-      -> { Runner.new.run 'spec/fixtures/three-to-lo.rb' }.must_output <<-end.gsub /^ */, ''
+      -> { Runner.new.run 'spec/fixtures/three-to-lo.rb' }.must_output <<-end.gsub(/^ */, '')
         -> lo\tNIL\t60\t[00:00:00:00:00:00] [00:00:00:00:00:00] [08.00] [00] [0000000000]
         -> lo\tNIL\t60\t[00:00:00:00:00:00] [00:00:00:00:00:00] [08.00] [00] [0000000001]
         -> lo\tNIL\t60\t[00:00:00:00:00:00] [00:00:00:00:00:00] [08.00] [00] [0000000002]
@@ -35,7 +35,7 @@ module Wiresnark describe Runner do
 
       out = capture_io { Runner.new.run 'spec/fixtures/cycle-to-lo.rb' }.first
 
-      out.must_match /#{'QOS.*CAN.*DSS.*MGT.*' * 4}/m
+      out.must_match(/#{'QOS.*CAN.*DSS.*MGT.*' * 4}/m)
       out.count('QOS').must_be :>, out.count('MGT')
     end
 
