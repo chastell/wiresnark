@@ -4,7 +4,7 @@ module Wiresnark class Runner
 
     env.generator_blocks.each do |block|
       gen = Object.new.extend DSL::GeneratorDSL
-      gen.instance_eval &block
+      gen.instance_eval(&block)
 
       iface  = Interface.new gen.interface
       output = gen.verbose? ? $stdout : nil
@@ -29,7 +29,7 @@ module Wiresnark class Runner
 
     env.monitor_blocks.each do |block|
       mon = Object.new.extend DSL::MonitorDSL
-      mon.instance_eval &block
+      mon.instance_eval(&block)
 
       # FIXME: deuglify the below
       counts = Hash[TypeBytes.keys.map { |type| [type, { bytes: 0,  count: 0 }]}]
