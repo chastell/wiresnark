@@ -11,7 +11,7 @@ module Wiresnark describe Interface do
     it 'prints the injected packets to the output' do
       Interface.new('lo').inject [Packet.new(payload: 'foo'), Packet.new(payload: 'bar')], output = StringIO.new
       output.rewind
-      output.read.must_equal <<-end.gsub /^\s*/, ''
+      output.read.must_equal <<-end.gsub(/^\s*/, '')
         -> lo\tNIL\t60\t[00:00:00:00:00:00] [00:00:00:00:00:00] [08.00] [00] [666f6f0000]
         -> lo\tNIL\t60\t[00:00:00:00:00:00] [00:00:00:00:00:00] [08.00] [00] [6261720000]
       end
