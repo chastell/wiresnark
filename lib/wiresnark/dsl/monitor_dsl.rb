@@ -8,6 +8,7 @@ module Wiresnark module DSL::MonitorDSL
   end
 
   def running_tally?
+    @running_tally ||= false
     @running_tally
   end
 end end
