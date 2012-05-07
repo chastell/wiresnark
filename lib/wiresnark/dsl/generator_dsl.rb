@@ -1,6 +1,3 @@
-require_relative 'common_dsl'
-require_relative 'packet_dsl'
-
 module Wiresnark module DSL::GeneratorDSL
   include DSL::CommonDSL, DSL::PacketDSL
 
