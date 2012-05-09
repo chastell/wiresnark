@@ -1,3 +1,6 @@
+require_relative 'net_fpga/bridge'
+require_relative 'net_fpga/port'
+
 module Wiresnark class NetFPGA
   attr_reader :registers
 

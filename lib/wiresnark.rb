@@ -6,6 +6,9 @@ module Wiresnark
   module DSL
   end
 
+  class NetFPGA
+  end
+
   TypeBytes = {
     'NIL' => 0,
     'DSS' => 1,
@@ -25,8 +28,6 @@ require_relative 'wiresnark/iip/getter'
 require_relative 'wiresnark/iip/shower'
 require_relative 'wiresnark/interface'
 require_relative 'wiresnark/net_fpga'
-require_relative 'wiresnark/net_fpga/bridge'
-require_relative 'wiresnark/net_fpga/port'
 require_relative 'wiresnark/packet'
 require_relative 'wiresnark/reg_parser'
 require_relative 'wiresnark/runner'
