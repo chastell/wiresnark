@@ -1,4 +1,4 @@
-module Wiresnark module DSL::CommonDSL
+module Wiresnark module DSL module CommonDSL
   def interface interface = nil
     @interface ||= nil
     interface.nil? ? @interface : @interface = interface
@@ -11,4 +11,4 @@ module Wiresnark module DSL::CommonDSL
   def verbose?
     @verbose ||= false
   end
-end end
+end end end

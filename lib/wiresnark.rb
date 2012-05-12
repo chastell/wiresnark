@@ -3,9 +3,6 @@ require 'nokogiri'
 require 'pcaprub'
 
 module Wiresnark
-  module DSL
-  end
-
   class NetFPGA
   end
 

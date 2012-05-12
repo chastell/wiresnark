@@ -1,5 +1,5 @@
-module Wiresnark module DSL::MonitorDSL
-  include DSL::CommonDSL
+module Wiresnark module DSL module MonitorDSL
+  include CommonDSL
 
   def running_tally
     @running_tally = true
@@ -9,4 +9,4 @@ module Wiresnark module DSL::MonitorDSL
     @running_tally ||= false
     @running_tally
   end
-end end
+end end end
