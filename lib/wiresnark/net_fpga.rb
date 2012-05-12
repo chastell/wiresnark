@@ -1,7 +1,7 @@
-require_relative 'net_fpga/bridge'
-require_relative 'net_fpga/port'
-
 module Wiresnark class NetFPGA
+  require_relative 'net_fpga/bridge'
+  require_relative 'net_fpga/port'
+
   attr_reader :registers
 
   def initialize regbridge = NetFPGA::Bridge.new

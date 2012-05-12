@@ -3,9 +3,6 @@ require 'nokogiri'
 require 'pcaprub'
 
 module Wiresnark
-  class NetFPGA
-  end
-
   TypeBytes = {
     'NIL' => 0,
     'DSS' => 1,
