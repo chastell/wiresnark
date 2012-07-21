@@ -1,5 +1,3 @@
-require 'ffi'
-require 'nokogiri'
 require 'pcaprub'
 
 module Wiresnark

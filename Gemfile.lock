@@ -2,16 +2,12 @@ PATH
   remote: .
   specs:
     wiresnark (0.1.8)
-      ffi
-      nokogiri
       pcaprub
 
 GEM
   remote: http://rubygems.org/
   specs:
-    ffi (1.0.11)
     minitest (3.2.0)
-    nokogiri (1.5.5)
     pcaprub (0.11.2)
 
 PLATFORMS
@@ -19,5 +15,5 @@ PLATFORMS
 
 DEPENDENCIES
   bundler
-  minitest (>= 2.11.1)
+  minitest (>= 3)
   wiresnark!
