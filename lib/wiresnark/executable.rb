@@ -5,9 +5,13 @@ module Wiresnark class Executable
   end
 
   def run opts = { runner: Runner.new }
-    case @command
+    case command
     when 'run'
       opts[:runner].run @args.first
     end
   end
+
+  private
+
+  attr_reader :command
 end end
