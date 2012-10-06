@@ -11,6 +11,7 @@ GEM
     listen (0.5.2)
     minitest (3.5.0)
     pcaprub (0.11.2)
+    rake (0.9.2.2)
     rb-inotify (0.8.8)
       ffi (>= 0.5.0)
     rerun (0.7.1)
@@ -22,6 +23,7 @@ PLATFORMS
 DEPENDENCIES
   bundler
   minitest (~> 3.0)
+  rake
   rb-inotify
   rerun
   wiresnark!
