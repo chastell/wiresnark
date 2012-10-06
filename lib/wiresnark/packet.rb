@@ -20,57 +20,59 @@ module Wiresnark class Packet
   end
 
   def destination_mac
-    @bin[0..5].unpack('H2H2H2H2H2H2').join ':'
+    bin[0..5].unpack('H2H2H2H2H2H2').join ':'
   end
 
   def destination_mac= mac
-    @bin[0..5] = mac.split(':').pack 'H2H2H2H2H2H2'
+    bin[0..5] = mac.split(':').pack 'H2H2H2H2H2H2'
   end
 
   def payload
-    @bin[15..-1]
+    bin[15..-1]
   end
 
   def payload= payload
     orig_size = size
-    @bin[15..-1] = payload
+    bin[15..-1] = payload
     pad_to orig_size
   end
 
   def size
-    @bin.size
+    bin.size
   end
 
   def source_mac
-    @bin[6..11].unpack('H2H2H2H2H2H2').join ':'
+    bin[6..11].unpack('H2H2H2H2H2H2').join ':'
   end
 
   def source_mac= mac
-    @bin[6..11] = mac.split(':').pack 'H2H2H2H2H2H2'
+    bin[6..11] = mac.split(':').pack 'H2H2H2H2H2H2'
   end
 
   def to_bin
-    @bin
+    bin
   end
 
   def to_s
-    ethertype = @bin[12..13].unpack('H*').first.insert 2, '.'
-    type_byte = @bin[14].unpack('H*').first
-    payload   = @bin[15..19].unpack('H*').first
+    ethertype = bin[12..13].unpack('H*').first.insert 2, '.'
+    type_byte = bin[14].unpack('H*').first
+    payload   = bin[15..19].unpack('H*').first
     "#{type}\t#{size}\t[#{destination_mac}] [#{source_mac}] [#{ethertype}] [#{type_byte}] [#{payload}]"
   end
 
   def type
-    TypeBytes.invert[@bin[14].ord] or 'NIL'
+    TypeBytes.invert[bin[14].ord] or 'NIL'
   end
 
   def type= type
-    @bin[14] = TypeBytes[type].chr
+    bin[14] = TypeBytes[type].chr
   end
 
   private
 
+  attr_reader :bin
+
   def pad_to min_size
-    @bin << "\x00" * (min_size - size) if size < min_size
+    bin << "\x00" * (min_size - size) if size < min_size
   end
 end end
