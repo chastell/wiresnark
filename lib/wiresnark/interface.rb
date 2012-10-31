@@ -13,7 +13,6 @@ module Wiresnark class Interface
     end
   end
 
-  private
-
   attr_reader :name
+  private     :name
 end end

@@ -68,9 +68,10 @@ module Wiresnark class Packet
     bin[14] = TypeBytes[type].chr
   end
 
-  private
-
   attr_reader :bin
+  private     :bin
+
+  private
 
   def pad_to min_size
     bin << "\x00" * (min_size - size) if size < min_size
