@@ -7,23 +7,12 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    ffi (1.2.0)
-    listen (0.6.0)
     minitest (4.3.3)
     pcaprub (0.11.3)
-    rake (10.0.3)
-    rb-inotify (0.8.8)
-      ffi (>= 0.5.0)
-    rerun (0.7.1)
-      listen
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler
   minitest (~> 4.0)
-  rake
-  rb-inotify
-  rerun
   wiresnark!
