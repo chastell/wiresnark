@@ -2,8 +2,7 @@ require 'bundler/setup'
 require 'minitest/autorun'
 require 'minitest/pride'
 require 'stringio'
-
-require_relative '../lib/wiresnark'
+require 'wiresnark'
 
 MiniTest::Spec.before do
   Wiresnark::Configuration.payload_bytes = 5
