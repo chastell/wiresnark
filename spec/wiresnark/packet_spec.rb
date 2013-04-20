@@ -7,13 +7,15 @@ module Wiresnark describe Packet do
     end
 
     it 'creates a packet based on the passed Hash' do
+      bin = "\xaa\xbb\xcc\xdd\xee\xff" + "\x11\x22\x33\x44\x55\x66" + "\x08\x00" + "\x02" + 'foo' + "\x00" * 82
+      bin.force_encoding 'BINARY'
       Packet.new(
         destination_mac: 'aa:bb:cc:dd:ee:ff',
         min_size: 100,
         source_mac: '11:22:33:44:55:66',
         payload: 'foo',
         type: 'CAN',
-      ).to_bin.must_equal "\xaa\xbb\xcc\xdd\xee\xff" + "\x11\x22\x33\x44\x55\x66" + "\x08\x00" + "\x02" + 'foo' + "\x00" * 82
+      ).to_bin.must_equal bin
     end
 
     it 'creates packets of random sizes' do
@@ -55,7 +57,8 @@ module Wiresnark describe Packet do
     it 'sets its destination MAC' do
       packet = Packet.new
       packet.destination_mac = 'aa:bb:cc:dd:ee:ff'
-      packet.to_bin[0..5].must_equal "\xaa\xbb\xcc\xdd\xee\xff"
+      bin = "\xaa\xbb\xcc\xdd\xee\xff".force_encoding 'BINARY'
+      packet.to_bin[0..5].must_equal bin
     end
   end
 

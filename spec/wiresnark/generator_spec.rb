@@ -7,7 +7,8 @@ module Wiresnark describe Generator do
       env.instance_eval { count 3 }
       Generator.generate(env).must_equal [Packet.new, Packet.new, Packet.new]
 
-      packet = Packet.new "\xaa\xbb\xcc\xdd\xee\xff" + "\x11\x22\x33\x44\x55\x66" + "\x08\x00" + "\x02" + 'foo' + "\x00" * 42
+      bin = "\xaa\xbb\xcc\xdd\xee\xff" + "\x11\x22\x33\x44\x55\x66" + "\x08\x00" + "\x02" + 'foo' + "\x00" * 42
+      packet = Packet.new bin.force_encoding 'BINARY'
       env = Object.new.extend DSL::GeneratorDSL
       env.instance_eval do
         count 5
